@@ -6,12 +6,12 @@ ListView {
 	id: treeView
 
 	property alias rootObj: elementsModel.rootObj
+	readonly property var selectedObj: currentItem ? currentItem.el.obj : null
 
 	model: ElementsModel {
 		id: elementsModel
 	}
 
-	focus: true
 	Keys.onLeftPressed: {
 		elementsModel.collapseIndex(currentIndex)
 	}

@@ -42,7 +42,7 @@ Window {
 
 		ElementsView {
 			id: elementsView
-			// Layout.preferredWidth: 400
+			Layout.preferredWidth: 400
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 
@@ -53,15 +53,16 @@ Window {
 		// 	target: targetRect
 		// }
 
-		// PropertyTreeView {
-		// 	Layout.fillWidth: true
-		// 	Layout.fillHeight: true
-		// 	target: targetRect
-		// }
+		PropertyTreeView {
+			Layout.preferredWidth: 400
+			Layout.fillHeight: true
+			target: elementsView.selectedObj
+		}
 	}
 
 	Component.onCompleted: {
 		elementsView.model.setTarget(targetRect)
 		elementsView.model.expandAll()
+		elementsView.focus = true
 	}
 }

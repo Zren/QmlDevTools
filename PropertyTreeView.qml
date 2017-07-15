@@ -10,18 +10,18 @@ TreeView {
 	TableViewColumn {
 		title: "Name"
 		role: "name"
-		width: 300
+		width: 180
 	}
 
-	TableViewColumn {
-		title: "Type"
-		role: "type"
-		width: 100
-	}
+	// TableViewColumn {
+	// 	title: "Type"
+	// 	role: "type"
+	// 	width: 100
+	// }
 	TableViewColumn {
 		title: "Value"
 		role: "val"
-		width: 400
+		width: 180
 	}
 
 	model: ListModel {
