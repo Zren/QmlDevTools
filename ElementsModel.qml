@@ -126,53 +126,76 @@ ListModel {
 		return -1
 	}
 
+	function toggleIndex(parentIndex) {
+		var parentEl = get(parentIndex)
+		if (parentEl.expanded) {
+
+		} else {
+			expandIndex(parentIndex)
+		}
+	}
+
 	function expandIndex(parentIndex) {
 		var parentEl = get(parentIndex)
 		var childIndex = parentIndex
 
+		var inserted = 0
 		for (var i = 0; i < parentEl.obj.children.length; i++) {
 			var obj = parentEl.obj.children[i]
 			var el = parseObj(obj)
 			el.depth = parentEl.depth + 1
 			insert(++childIndex, el)
+			logDepth(parentEl.depth, 'expandIndex', parentIndex, 'inserted at', childIndex)
+			inserted += 1
 		}
 		setProperty(parentIndex, 'expanded', true)
+		return inserted
 	}
 
 	function expandObj(parentObj) {
 		var parentIndex = findObj(parentObj)
 		if (parentIndex >= 0) {
-			expandIndex(parentIndex)
+			return expandIndex(parentIndex)
+		} else {
+			return 0
 		}
 	}
 
 	function expandAll(parentIndex, maxDepth) {
-		console.log('expandAll', parentIndex, maxDepth)
+		// console.log('expandAll', parentIndex, maxDepth)
 		if (typeof parentIndex === "undefined") {
 			parentIndex = 0
 		}
 
 		if (parentIndex < 0 || parentIndex >= count)
 			return;
-		console.log('expandAll in range')
+		// console.log('expandAll in range')
 
 		var parentEl = get(parentIndex)
 
 		if (typeof maxDepth === "number" && parentEl.depth >= maxDepth)
 			return;
-		console.log('depth below maxDepth', parentEl.depth)
+		// console.log('depth below maxDepth', parentEl.depth)
 
 		if (parentEl.expanded)
 			return;
-		console.log('not already expanded', parentEl.expanded)
+		// console.log('not already expanded', parentEl.expanded)
 
-		expandIndex(parentIndex)
+		var inserted = expandIndex(parentIndex)
 
-		console.log('for', count - 1, parentIndex)
-		for (var i = count - 1; i > parentIndex; i--) {
-			console.log('expandAll child', i)
+		logDepth(parentEl.depth, 'for', parentIndex + inserted, '..', parentIndex)
+		for (var i = parentIndex + inserted; i > parentIndex; i--) {
+			logDepth(parentEl.depth, 'expandAll child', i)
 			expandAll(i, maxDepth)
 		}
+	}
+
+	function logDepth(depth, a, b, c, d, e) {
+		var depthStr = ''
+		for (var i = 0; i < depth; i++) {
+			depthStr += '\t'
+		}
+		console.log.apply(console, [depthStr].concat(Array.prototype.slice.call(arguments, 1)))
 	}
 
 	// function getTreeItem(item) {

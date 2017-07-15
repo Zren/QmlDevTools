@@ -16,6 +16,7 @@ ListView {
 		width: flow.width
 		height: flow.height
 
+		property var elIndex: index
 		property var el: model
 
 		property string keyColor: el.selected ? "#a1b3cf" : "#9a6127"
@@ -46,7 +47,7 @@ ListView {
 				width: expandText.width
 				height: expandText.height
 
-				onClicked: elementsModel.expandObj(el.obj)
+				onClicked: elementsModel.toggleIndex(elIndex)
 
 				Text {
 					id: expandText
