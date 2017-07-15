@@ -12,22 +12,38 @@ ListView {
 		id: elementsModel
 	}
 
+	focus: true
+	Keys.onLeftPressed: {
+		elementsModel.collapseIndex(currentIndex)
+	}
+	Keys.onRightPressed: {
+		elementsModel.expandIndex(currentIndex)
+	}
+
 	delegate: MouseArea {
 		width: flow.width
 		height: flow.height
 
 		property var elIndex: index
 		property var el: model
+		property bool selected: index == currentIndex
 
-		property string keyColor: el.selected ? "#a1b3cf" : "#9a6127"
-		property string valueColor: el.selected ? "#fff" : "#3879d9"
-		property string otherColor: el.selected ? "#a1b3cf" : "#a1b3cf"
+		property string keyColor: selected ? "#a1b3cf" : "#9a6127"
+		property string valueColor: selected ? "#fff" : "#3879d9"
+		property string otherColor: selected ? "#a1b3cf" : "#a1b3cf"
 
-		onClicked: elementsModel.selectedObj = el.obj
+		onClicked: select()
+
+		function select() {
+			// elementsModel.selectedObj = el.obj
+			currentIndex = index
+			// focus = true
+		}
+
 
 		Rectangle {
 			anchors.fill: flow
-			visible: model.selected
+			visible: selected
 			color: "#3879d9"
 		}
 

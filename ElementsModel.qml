@@ -8,13 +8,39 @@ ListModel {
 	property var lastRootObj: null
 	property var rootObj: null
 	property var selectedObj: null
+	readonly property int selectedIndex: _selectedIndex
+	property int _selectedIndex: -1
 
 	onRootObjChanged: update()
-	onSelectedObjChanged: {
+
+	onSelectedObjChanged: updateSelection()
+	function updateSelection() {
+		var hasSelectionIndex = false
 		for (var i = 0; i < count; i++) {
 			var el = get(i)
-			setProperty(i, 'selected', el.obj == selectedObj)
+			var selected = el.obj == selectedObj
+			setProperty(i, 'selected', selected)
+			if (selected) {
+				_selectedIndex = i
+				hasSelectionIndex = true
+			}
 		}
+		if (!hasSelectionIndex) {
+			_selectedIndex = -1
+		}
+	}
+	function setSelectedIndex(index) {
+		if (0 <= index && index < count) {
+			selectedObj = get(index).obj
+		} else {
+			selectedObj = null
+		}
+	}
+	function incrementSelection() {
+		setSelectedIndex(selectedIndex + 1)
+	}
+	function decrementSelection() {
+		setSelectedIndex(selectedIndex - 1)
 	}
 	
 	function isNull(obj) {
@@ -138,23 +164,31 @@ ListModel {
 
 	function expandIndex(parentIndex) {
 		var parentEl = get(parentIndex)
-		var childIndex = parentIndex
-
-		var inserted = 0
-		for (var i = 0; i < parentEl.obj.children.length; i++) {
-			var obj = parentEl.obj.children[i]
-			var el = parseObj(obj)
-			el.depth = parentEl.depth + 1
-			insert(++childIndex, el)
-			logDepth(parentEl.depth, 'expandIndex', parentIndex, 'inserted at', childIndex)
-			inserted += 1
+		if (parentEl.expanded) {
+			return 0
 		}
-		setProperty(parentIndex, 'expanded', true)
+
+		var childIndex = parentIndex
+		var inserted = 0
+		if (parentEl.obj.children.length > 0) {
+			for (var i = 0; i < parentEl.obj.children.length; i++) {
+				var obj = parentEl.obj.children[i]
+				var el = parseObj(obj)
+				el.depth = parentEl.depth + 1
+				insert(++childIndex, el)
+				logDepth(parentEl.depth, 'expandIndex', parentIndex, 'inserted at', childIndex)
+				inserted += 1
+			}
+			setProperty(parentIndex, 'expanded', true)
+		}
 		return inserted
 	}
 
 	function collapseIndex(parentIndex) {
 		var parentEl = get(parentIndex)
+		if (!parentEl.expanded) {
+			return 0
+		}
 
 		var removed = 0
 		for (var i = 0; i < parentEl.obj.children.length; i++) {
