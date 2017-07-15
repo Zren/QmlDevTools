@@ -1,6 +1,5 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
-import QtQuick.Layouts 1.3
 import QtQuick.Window 2.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.0
@@ -41,16 +40,26 @@ Window {
 	RowLayout {
 		anchors.fill: parent
 
-		RootTreeView {
-			Layout.fillHeight: true
-			target: targetRect
-		}
-
-		PropertyTreeView {
+		ElementsView {
+			// Layout.preferredWidth: 400
 			Layout.fillWidth: true
 			Layout.fillHeight: true
-			target: targetRect
+			
+			Component.onCompleted: {
+				model.setTarget(targetRect)
+			}
 		}
+
+		// RootTreeView {
+		// 	Layout.fillHeight: true
+		// 	target: targetRect
+		// }
+
+		// PropertyTreeView {
+		// 	Layout.fillWidth: true
+		// 	Layout.fillHeight: true
+		// 	target: targetRect
+		// }
 	}
 
 
