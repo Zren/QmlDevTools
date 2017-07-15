@@ -47,6 +47,7 @@ Window {
 			
 			Component.onCompleted: {
 				model.setTarget(targetRect)
+				model.expandAll()
 			}
 		}
 

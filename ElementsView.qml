@@ -41,11 +41,16 @@ ListView {
 			MouseArea {
 				id: expandButton
 
+				enabled: el.obj.children.length > 0
+
 				width: expandText.width
 				height: expandText.height
 
+				onClicked: elementsModel.expandObj(el.obj)
+
 				Text {
 					id: expandText
+					visible: parent.enabled
 					text: (el.expanded ? '▼' : '▶') + ' '
 				}
 			}
@@ -74,7 +79,6 @@ ListView {
 						+ '<font color="' + valueColor + '">' + value + '</font>'
 						+ '<font color="' + otherColor + '">"</font>'
 
-					// Component.onCompleted: console.log(, index, model, text)
 				}
 			}
 

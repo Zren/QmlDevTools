@@ -96,36 +96,29 @@ ListModel {
 			var key = keys[i]
 			var value = obj[key]
 			if (isSignal(key, value)) {
-
 			} else if (typeof(value) === "function") {
 			} else {
-				console.log('not attribute key', key)
 				el.attributes.push({
 					key: key,
 					value: valueToString(value),
 				})
-				// el.attributeKeys.push(key)
 			}
 		}
 		return el
 	}
 
 	function parseRootObj() {
-		selectedObj = rootObj
 		var el = parseObj(rootObj)
-		// el.selected = true
 		append(el)
-		for (var i = 0; i < rootObj.children.length; i++) {
-			var obj = rootObj.children[i]
-			var el = parseObj(obj)
-			el.depth = 1
-			append(el)
-		}
+		// expandObj(rootObj)
+		selectedObj = rootObj
 	}
 
 	function findObj(obj) {
+		console.log("findObj", count)
 		for (var i = 0; i < count; i++) {
 			var el = get(i)
+			console.log("el.obj", el.obj, obj, el.obj == obj)
 			if (el.obj == obj) {
 				return i
 			}
@@ -133,25 +126,53 @@ ListModel {
 		return -1
 	}
 
+	function expandIndex(parentIndex) {
+		var parentEl = get(parentIndex)
+		var childIndex = parentIndex
+
+		for (var i = 0; i < parentEl.obj.children.length; i++) {
+			var obj = parentEl.obj.children[i]
+			var el = parseObj(obj)
+			el.depth = parentEl.depth + 1
+			insert(++childIndex, el)
+		}
+		setProperty(parentIndex, 'expanded', true)
+	}
+
 	function expandObj(parentObj) {
 		var parentIndex = findObj(parentObj)
 		if (parentIndex >= 0) {
-			var parentEl = get(parentIndex)
-			var childIndex = parentIndex
-			for (var i = 0; i < parentObj.children.length; i++) {
-				var obj = parentObj.children[i]
-				var el = parseObj(obj)
-				el.depth = parentEl + 1
-				insert(++childIndex, el)
-			}
-			setProperty(parentIndex, 'expanded', true)
+			expandIndex(parentIndex)
+		}
+	}
+
+	function expandAll(parentIndex, maxDepth) {
+		console.log('expandAll', parentIndex, maxDepth)
+		if (typeof parentIndex === "undefined") {
+			parentIndex = 0
 		}
 
-		selectedObj = rootObj
-		var el = parseObj(rootObj)
-		// el.selected = true
-		append(el)
-		
+		if (parentIndex < 0 || parentIndex >= count)
+			return;
+		console.log('expandAll in range')
+
+		var parentEl = get(parentIndex)
+
+		if (typeof maxDepth === "number" && parentEl.depth >= maxDepth)
+			return;
+		console.log('depth below maxDepth', parentEl.depth)
+
+		if (parentEl.expanded)
+			return;
+		console.log('not already expanded', parentEl.expanded)
+
+		expandIndex(parentIndex)
+
+		console.log('for', count - 1, parentIndex)
+		for (var i = count - 1; i > parentIndex; i--) {
+			console.log('expandAll child', i)
+			expandAll(i, maxDepth)
+		}
 	}
 
 	// function getTreeItem(item) {
