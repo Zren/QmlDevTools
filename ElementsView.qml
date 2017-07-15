@@ -6,7 +6,6 @@ ListView {
 	id: treeView
 
 	property alias rootObj: elementsModel.rootObj
-	property alias selectedObj: elementsModel.selectedObj
 
 	model: ElementsModel {
 		id: elementsModel

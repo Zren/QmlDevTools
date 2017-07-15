@@ -7,41 +7,8 @@ ListModel {
 
 	property var lastRootObj: null
 	property var rootObj: null
-	property var selectedObj: null
-	readonly property int selectedIndex: _selectedIndex
-	property int _selectedIndex: -1
 
 	onRootObjChanged: update()
-
-	onSelectedObjChanged: updateSelection()
-	function updateSelection() {
-		var hasSelectionIndex = false
-		for (var i = 0; i < count; i++) {
-			var el = get(i)
-			var selected = el.obj == selectedObj
-			setProperty(i, 'selected', selected)
-			if (selected) {
-				_selectedIndex = i
-				hasSelectionIndex = true
-			}
-		}
-		if (!hasSelectionIndex) {
-			_selectedIndex = -1
-		}
-	}
-	function setSelectedIndex(index) {
-		if (0 <= index && index < count) {
-			selectedObj = get(index).obj
-		} else {
-			selectedObj = null
-		}
-	}
-	function incrementSelection() {
-		setSelectedIndex(selectedIndex + 1)
-	}
-	function decrementSelection() {
-		setSelectedIndex(selectedIndex - 1)
-	}
 	
 	function isNull(obj) {
 		return obj === null || typeof(obj) === 'undefined'
@@ -112,7 +79,6 @@ ListModel {
 		var el = {
 			tagName: valueToString(obj),
 			depth: 0,
-			selected: selectedObj == obj,
 			expanded: false,
 			attributes: [],
 			attributeKeys: [],
@@ -138,7 +104,6 @@ ListModel {
 		var el = parseObj(rootObj)
 		append(el)
 		// expandObj(rootObj)
-		selectedObj = rootObj
 	}
 
 	function findObj(obj) {
