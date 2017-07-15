@@ -52,7 +52,11 @@ ListView {
 				Text {
 					id: expandText
 					visible: parent.enabled
-					text: (el.expanded ? '▼' : '▶') + ' '
+					// text: (el.expanded ? '▼' : '▶') + ' '
+					// text: '▶'
+					// rotation: el.expanded ? 90 : 0
+					text: '▼'
+					rotation: el.expanded ? 0 : -90
 				}
 			}
 

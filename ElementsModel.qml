@@ -82,6 +82,7 @@ ListModel {
 	}
 
 	function parseObj(obj) {
+		console.log('parseObj', obj, obj.children.length)
 		var el = {
 			tagName: valueToString(obj),
 			depth: 0,
@@ -129,7 +130,7 @@ ListModel {
 	function toggleIndex(parentIndex) {
 		var parentEl = get(parentIndex)
 		if (parentEl.expanded) {
-
+			collapseIndex(parentIndex)
 		} else {
 			expandIndex(parentIndex)
 		}
@@ -150,6 +151,24 @@ ListModel {
 		}
 		setProperty(parentIndex, 'expanded', true)
 		return inserted
+	}
+
+	function collapseIndex(parentIndex) {
+		var parentEl = get(parentIndex)
+
+		var removed = 0
+		for (var i = 0; i < parentEl.obj.children.length; i++) {
+			var obj = parentEl.obj.children[i]
+			var childIndex = findObj(obj)
+			if (childIndex >= 0) {
+				removed += collapseIndex(childIndex)
+				remove(childIndex)
+				logDepth(parentEl.depth, 'collapseIndex', parentIndex, 'removed', childIndex)
+				removed += 1
+			}
+		}
+		setProperty(parentIndex, 'expanded', false)
+		return removed
 	}
 
 	function expandObj(parentObj) {

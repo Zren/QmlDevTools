@@ -41,14 +41,11 @@ Window {
 		anchors.fill: parent
 
 		ElementsView {
+			id: elementsView
 			// Layout.preferredWidth: 400
 			Layout.fillWidth: true
 			Layout.fillHeight: true
-			
-			Component.onCompleted: {
-				model.setTarget(targetRect)
-				model.expandAll()
-			}
+
 		}
 
 		// RootTreeView {
@@ -63,8 +60,8 @@ Window {
 		// }
 	}
 
-
 	Component.onCompleted: {
-
+		elementsView.model.setTarget(targetRect)
+		elementsView.model.expandAll()
 	}
 }
