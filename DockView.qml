@@ -36,6 +36,7 @@ FocusScope {
 			Layout.fillHeight: true
 
 			function exec(str) {
+				input(str)
 				var comp = 'import QtQuick 2.0; QtObject {\n'
 				comp += 'Component.onCompleted: {\n'
 				comp += 'try {\n'
@@ -61,6 +62,11 @@ FocusScope {
 					type: messageType,
 					message: '' + str,
 				})
+				outputView.positionViewAtEnd()
+			}
+
+			function input(str) {
+				addMessage('input', str)
 			}
 
 			function log(str) {
@@ -71,8 +77,19 @@ FocusScope {
 				addMessage('error', str)
 			}
 
-			delegate: Text {
-				text: model.message
+			delegate: Rectangle {
+				height: row.height
+
+				RowLayout {
+					id: row
+					Text {
+						Layout.preferredWidth: 20
+					}
+					Text {
+						Layout.fillWidth: true
+						text: model.message
+					}
+				}
 			}
 		}
 		TextField {
