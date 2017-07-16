@@ -14,6 +14,7 @@ Rectangle {
 	color: "#eeeeee"
 
 	property var elementsView: null
+	property var elementsModel: elementsView ? elementsView.model : null
 	property int totalMatches: 0
 	property int currentMatch: 0
 	property alias query: textField.text
@@ -40,8 +41,8 @@ Rectangle {
 		var n = 0
 		var mIndex = -1
 		var lowerQuery = query.toLowerCase()
-		for (var i = 0; i < elementsView.elementsModel.count; i++) {
-			var el = elementsView.elementsModel.get(i)
+		for (var i = 0; i < elementsModel.count; i++) {
+			var el = elementsModel.get(i)
 			var lowerTag = el.tagName.toLowerCase()
 			if (lowerTag.indexOf(lowerQuery) >= 0) {
 				n += 1
