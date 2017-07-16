@@ -198,6 +198,11 @@ ListView {
 								ColorAnimation { target: valueRect; property: "color"; to: "transparent"; duration: 600 }
 								ColorAnimation { target: valueText; property: "color"; to: valueColor; duration: 600 }
 							}
+							ScriptAction {
+								script: {
+									valueText.color = Qt.binding(function(){ return valueColor })
+								}
+							}
 						}
 					}
 					Text {
