@@ -195,10 +195,12 @@ ListModel {
 			}
 			setProperty(parentIndex, 'expanded', true)
 		}
+		// parentEl.obj.connect('destruction', removeElement.bind(elementsModel, parentEl.obj))
 		return inserted
 	}
 
 	function collapseIndex(parentIndex) {
+		console.log("collapseIndex", parentIndex, 'count', count)
 		var parentEl = get(parentIndex)
 		if (!parentEl.expanded) {
 			return 0

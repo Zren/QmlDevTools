@@ -62,9 +62,9 @@ Window {
 			}
 		}
 
-		Loader {
-			sourceComponent: testDynamicComponent
-		}
+		// Loader {
+		// 	sourceComponent: testDynamicComponent
+		// }
 	}
 
 	DevToolsView {

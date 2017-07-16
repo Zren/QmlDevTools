@@ -165,11 +165,10 @@ ListView {
 					height: childrenRect.height
 
 					property var key: el.attributes.get(index).key
-					// property var value: el.attributes.get(index).value
-					property var value: el.obj[key]
+					property var value: el.attributes.get(index).value
 
 					property bool animationsConnected: false
-					property bool showUpdates: false
+					property bool showUpdates: true
 					onShowUpdatesChanged: {
 						if (showUpdates) {
 							connectAnimations()
@@ -180,6 +179,7 @@ ListView {
 
 					function connectAnimations() {
 						if (!animationsConnected) {
+							value = Qt.binding(function() { return el.obj[key] })
 							valueChanged.connect(valueChangedAnimation.start)
 							animationsConnected = true
 						}
@@ -187,6 +187,7 @@ ListView {
 					function disconnectAnimations() {
 						if (animationsConnected) {
 							valueChanged.disconnect(valueChangedAnimation.start)
+							value = Qt.binding(function() { return el.attributes.get(index).value })
 							animationsConnected = false
 						}
 					}
@@ -196,6 +197,7 @@ ListView {
 						connectAnimations()
 					}
 					Component.onDestruction: {
+						console.log('element onDestruction', index)
 						disconnectAnimations()
 					}
 
