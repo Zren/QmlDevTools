@@ -51,6 +51,9 @@ TextArea {
 				cursorPosition = text.length
 				console.log('history down', historyIndex)
 			}
+		} else if (event.modifiers & Qt.ControlModifier && event.key == Qt.Key_L) {
+			event.accepted = true
+			outputView.model.clear()
 		}
 	}
 

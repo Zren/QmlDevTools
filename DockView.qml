@@ -1,6 +1,7 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
+import QtQuick.Controls 2.2 as QtQuickControls2
 import QtQuick.Controls.Styles 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 
@@ -45,6 +46,9 @@ FocusScope {
 					}
 
 					onClicked: outputView.model.clear()
+
+					QtQuickControls2.ToolTip.visible: clearLogButton.containsMouse && !clearLogButton.pressed
+					QtQuickControls2.ToolTip.text: 'Clear console <font color="#666">Ctrl+L</font>'
 				}
 			}
 		}
