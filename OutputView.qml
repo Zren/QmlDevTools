@@ -4,6 +4,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import "SvgIconPaths.js" as SvgIconPaths
+
 ListView {
 	id: outputView
 
@@ -124,9 +126,9 @@ ListView {
 					iconSize: 16
 					path: {
 						if (type == 'input') {
-							return 'm5 8l6.251-6 .749.719-4.298 4.125-1.237 1.156 1.237 1.156 4.298 4.125-.749.719-4.298-4.125z'
+							return SvgIconPaths.arrowLeft
 						} else if (type == 'output') {
-							return 'm12 8l-6.251-6-.749.719 4.298 4.125 1.237 1.156-1.237 1.156-4.298 4.125.749.719 4.298-4.125z'
+							return SvgIconPaths.arrowRight
 						} else {
 							return ''
 						}

@@ -141,16 +141,65 @@ ListView {
 				id: repeater
 				model: el.attributes
 
-				Text {
+				// Text {
+				// 	property var key: el.attributes.get(index).key
+				// 	property var value: el.obj[key]
+
+				// 	text: '&nbsp;'
+				// 		+ '<font color="' + keyColor + '">' + key + '</font>'
+				// 		+ '<font color="' + otherColor + '">="</font>'
+				// 		+ '<font color="' + valueColor + '">' + value + '</font>'
+				// 		+ '<font color="' + otherColor + '">"</font>'
+
+				// 	Rectangle {
+				// 		anchors.fill: parent
+				// 		color: "transparent"
+				// 		border.color: "#cec"
+				// 		border.width: 1
+				// 	}
+				// }
+				Row {
+					width: childrenRect.width
+					height: childrenRect.height
+
 					property var key: el.attributes.get(index).key
-					property var value: el.attributes.get(index).value
+					property var value: el.obj[key]
+					onValueChanged: valueChangedAnimation.running = true
 
-					text: '&nbsp;'
-						+ '<font color="' + keyColor + '">' + key + '</font>'
-						+ '<font color="' + otherColor + '">="</font>'
-						+ '<font color="' + valueColor + '">' + value + '</font>'
-						+ '<font color="' + otherColor + '">"</font>'
+					Text {
+						text: '&nbsp;'
+							+ '<font color="' + keyColor + '">' + key + '</font>'
+							+ '<font color="' + otherColor + '">="</font>'
+					}
+					Rectangle {
+						id: valueRect
+						width: valueText.width
+						height: valueText.height
+						color: "transparent"
+						radius: 4
 
+						Text {
+							id: valueText
+							text: value
+							color: valueColor
+						}
+
+						SequentialAnimation {
+							id: valueChangedAnimation
+							// running: false
+							ParallelAnimation {
+								ColorAnimation { target: valueRect; property: "color"; to: "#a0439a"; duration: 100 }
+								ColorAnimation { target: valueText; property: "color"; to: "#fff"; duration: 100 }
+							}
+							ParallelAnimation {
+								ColorAnimation { target: valueRect; property: "color"; to: "transparent"; duration: 600 }
+								ColorAnimation { target: valueText; property: "color"; to: valueColor; duration: 600 }
+							}
+						}
+					}
+					Text {
+						text: '<font color="' + otherColor + '">"</font>'
+					}
 				}
 			}
 

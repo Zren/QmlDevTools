@@ -4,6 +4,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import "SvgIconPaths.js" as SvgIconPaths
+
 FocusScope {
 	id: dockView
 
@@ -22,6 +24,26 @@ FocusScope {
 			Layout.fillWidth: true
 			Layout.preferredHeight: 26
 			color: "#f3f3f3"
+
+			RowLayout {
+				anchors.fill: parent
+				spacing: 0
+
+				MouseArea {
+					Layout.fillHeight: true
+					Layout.preferredWidth: 40
+					hoverEnabled: true
+
+					SvgIcon {
+						width: 20
+						height: 20
+						anchors.centerIn: parent
+						iconSize: 16
+						path: SvgIconPaths.cancel
+						fillColor: parent.containsMouse && !parent.pressed ? '#333333' : '#6e6e6e'
+					}
+				}
+			}
 		}
 
 		Rectangle {
@@ -45,8 +67,10 @@ FocusScope {
 				// flickableItem.returnToBounds()
 			}
 
+			property int viewportWidth: viewport ? viewport.width : width
+
 			Column {
-				width: scrollView.viewport ? scrollView.viewport.width : scrollView.width
+				width: scrollView.viewportWidth
 				height: childrenRect.height
 
 				OutputView {
@@ -67,7 +91,7 @@ FocusScope {
 						SvgIcon {
 							anchors.fill: parent
 							iconSize: 16
-							path: 'm12 8l-6.251-6-.749.719 4.298 4.125 1.237 1.156-1.237 1.156-4.298 4.125.749.719 4.298-4.125z'
+							path: SvgIconPaths.arrowRight
 							fillColor: '#3a7ff1'
 						}
 					}
