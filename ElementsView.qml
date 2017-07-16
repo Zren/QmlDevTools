@@ -31,6 +31,7 @@ ListView {
 		property var el: model
 		property bool selected: index == currentIndex
 
+		property string tagColor: selected ? "#fff" : "#a0439a"
 		property string keyColor: selected ? "#a1b3cf" : "#9a6127"
 		property string valueColor: selected ? "#fff" : "#3879d9"
 		property string otherColor: selected ? "#a1b3cf" : "#a1b3cf"
@@ -86,7 +87,7 @@ ListView {
 
 			Text {
 				id: tagName
-				text: '<font color="' + valueColor + '">' + el.tagName + '</font>'
+				text: '<font color="' + tagColor + '">' + el.tagName + '</font>'
 			}
 
 			Repeater {
