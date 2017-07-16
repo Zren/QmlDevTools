@@ -5,6 +5,8 @@ import QtQuick.Controls 1.4
 ListView {
 	id: elementsView
 
+	clip: true
+
 	boundsBehavior: Flickable.StopAtBounds
 	// highlightMoveVelocity: 0
 	highlightMoveDuration: 0
