@@ -1,6 +1,7 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 FocusScope {
 	id: dockView
@@ -43,7 +44,7 @@ FocusScope {
 				comp += 'var _result = ('
 				comp += str.replace('console.log(', 'outputView.log(')
 				comp += ')\n'
-				comp += 'outputView.log(_result)\n'
+				comp += 'outputView.output(_result)\n'
 				comp += '} catch (e) {\n'
 				comp += 'outputView.error(e)\n'
 				comp += '}\n'
@@ -69,6 +70,10 @@ FocusScope {
 				addMessage('input', str)
 			}
 
+			function output(str) {
+				addMessage('output', str)
+			}
+
 			function log(str) {
 				addMessage('log', str)
 			}
@@ -82,10 +87,33 @@ FocusScope {
 
 				RowLayout {
 					id: row
-					Text {
+
+					Item {
 						Layout.preferredWidth: 20
+						Layout.preferredHeight: 12
+						
+						PlasmaCore.IconItem {
+							anchors.fill: parent
+							visible: type == 'error'
+							source: 'emblem-error'
+						}
+						SvgIcon {
+							anchors.fill: parent
+							visible: type == 'input' || type == 'output'
+							iconSize: 16
+							path: {
+								if (type == 'input') {
+									return 'm5 8l6.251-6 .749.719-4.298 4.125-1.237 1.156 1.237 1.156 4.298 4.125-.749.719-4.298-4.125z'
+								} else if (type == 'output') {
+									return 'm12 8l-6.251-6-.749.719 4.298 4.125 1.237 1.156-1.237 1.156-4.298 4.125.749.719 4.298-4.125z'
+								} else {
+									return ''
+								}
+							}
+						}
 					}
 					Text {
+						id: messageText
 						Layout.fillWidth: true
 						text: model.message
 					}
