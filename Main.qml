@@ -45,7 +45,25 @@ Window {
 			}
 		}
 		Item {
-			
+
+		}
+
+		Component {
+			id: testDynamicComponent
+			Item {
+				id: testDynamic
+				Timer {
+					running: true
+					interval: 4000
+					repeat: true
+					onTriggered: Qt.createQmlObject('import QtQuick 2.0; Item {}', testDynamic) // Test Linear
+					// onTriggered: testDynamicComponent.createObject(testDynamic) // Test Exponential
+				}
+			}
+		}
+
+		Loader {
+			sourceComponent: testDynamicComponent
 		}
 	}
 
