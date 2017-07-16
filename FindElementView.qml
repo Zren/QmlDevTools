@@ -1,13 +1,16 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.0
+
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 import "util.js" as Util
 
 Rectangle {
 	id: findElementView
 
-	height: 1 + row.height
+	height: column.height
 	color: "#eeeeee"
 
 	property var elementsView: null
@@ -71,57 +74,169 @@ Rectangle {
 		deltaMatch(-1)
 	}
 
-	Rectangle {
-		anchors.top: parent.top
+	ColumnLayout {
+		id: column
 		anchors.left: parent.left
 		anchors.right: parent.right
-		height: 1
-		color: "#dfdfdf"
-	}
-
-	RowLayout {
-		id: row
-		anchors.left: parent.left
-		anchors.right: parent.right
-		anchors.bottom: parent.bottom
-		// height: 18
-
-		TextField {
-			id: textField
-			placeholderText: 'Search by element type'
+		spacing: 0
+		
+		Rectangle {
 			Layout.fillWidth: true
-			Layout.fillHeight: true
+			height: 1
+			color: "#dfdfdf"
+		}
 
-			onAccepted: {
-				nextMatch()
+		Item {
+			height: 1
+		}
+
+		RowLayout {
+			id: row
+			Layout.fillWidth: true
+			spacing: 0
+
+			Rectangle {
+				width: 1
+				height: 18
+				color: "#a3a3a3"
 			}
 
-			Text {
-				anchors.verticalCenter: parent.verticalCenter
-				anchors.right: parent.right
-				anchors.rightMargin: units.smallSpacing
-				color: "#888"
-				visible: query
-				text: "" + currentMatch + " of " + totalMatches
+			TextField {
+				id: textField
+				placeholderText: 'Search by element type'
+				Layout.fillWidth: true
+				implicitHeight: 20
+
+				onAccepted: {
+					nextMatch()
+				}
+
+				Text {
+					anchors.verticalCenter: parent.verticalCenter
+					anchors.right: parent.right
+					anchors.rightMargin: units.smallSpacing
+					color: "#888"
+					visible: query
+					text: "" + currentMatch + " of " + totalMatches
+				}
+
+				Keys.onEscapePressed: findElementView.visible = false
+
+				style: TextFieldStyle {
+					font.pointSize: -1
+					font.pixelSize: 13
+
+					padding.bottom: 0
+					background: Rectangle {
+						width: parent.width
+						height: 20
+						color: "#ffffff"
+						Rectangle {
+							anchors.left: parent.left
+							anchors.top: parent.top
+							anchors.right: parent.right
+							height: 1
+							color: "#a3a3a3"
+						}
+						Rectangle {
+							anchors.left: parent.left
+							anchors.bottom: parent.bottom
+							anchors.right: parent.right
+							height: 1
+							color: "#a3a3a3"
+						}
+					}
+				}
 			}
 
-			Keys.onEscapePressed: findElementView.visible = false
+			Rectangle {
+				width: 1
+				height: 20
+				color: "#c6c6c6"
+				Rectangle {
+					anchors.left: parent.left
+					anchors.top: parent.top
+					anchors.right: parent.right
+					height: 1
+					color: "#a3a3a3"
+				}
+				Rectangle {
+					anchors.left: parent.left
+					anchors.bottom: parent.bottom
+					anchors.right: parent.right
+					height: 1
+					color: "#a3a3a3"
+				}
+			}
+
+			FindButton {
+				text: "⬆"
+				enabled: totalMatches > 0
+				pixelSize: 18
+				onClicked: prevMatch()
+			}
+
+			Rectangle {
+				width: 1
+				height: 20
+				color: "#d8d8d8"
+				Rectangle {
+					anchors.left: parent.left
+					anchors.top: parent.top
+					anchors.right: parent.right
+					height: 1
+					color: "#a3a3a3"
+				}
+				Rectangle {
+					anchors.left: parent.left
+					anchors.bottom: parent.bottom
+					anchors.right: parent.right
+					height: 1
+					color: "#a3a3a3"
+				}
+			}
+
+			FindButton {
+				text: "⬇"
+				enabled: totalMatches > 0
+				pixelSize: 18
+				onClicked: nextMatch()
+			}
+
+			Rectangle {
+				width: 1
+				height: 18
+				color: "#a3a3a3"
+			}
+
+			Item {
+				width: 11
+			}
+
+			Rectangle {
+				width: 1
+				height: 18
+				color: "#a3a3a3"
+			}
+
+			FindButton {
+				text: "Cancel"
+				onClicked: findElementView.visible = false
+			}
+
+			Rectangle {
+				width: 1
+				height: 18
+				color: "#a3a3a3"
+			}
+
+			Item {
+				width: 5
+			}
 		}
 
-		Button {
-			iconName: "arrow-up"
-			onClicked: prevMatch()
-		}
-
-		Button {
-			iconName: "arrow-down"
-			onClicked: nextMatch()
-		}
-
-
-		Button {
-			text: "Cancel"
-			onClicked: findElementView.visible = false
+		Item {
+			height: 1
 		}
 	}
 }
