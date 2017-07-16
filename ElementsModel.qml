@@ -131,7 +131,7 @@ ListModel {
 		var parentEl = get(parentIndex)
 		if (parentEl.expanded)
 			return 0
-		if (devToolsView.isDescendant(parentEl.obj))
+		if (devToolsView.contains(parentEl.obj))
 			return 0
 
 		var childIndex = parentIndex

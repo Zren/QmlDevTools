@@ -48,4 +48,8 @@ RowLayout {
 	function isDescendant(obj) {
 		return isDescendantOf(obj, devToolsView)
 	}
+
+	function contains(obj) {
+		return obj == devToolsView || isDescendant(obj)
+	}
 }
