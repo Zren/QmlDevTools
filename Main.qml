@@ -42,6 +42,7 @@ Window {
 
 	DevToolsView {
 		id: devToolsView
+		anchors.fill: parent
 	}
 
 	Component.onCompleted: {

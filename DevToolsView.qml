@@ -2,35 +2,40 @@ import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 
-RowLayout {
+Item {
 	id: devToolsView
-	anchors.fill: parent
 
 	property alias elementsView: elementsView
 	property alias elementsModel: elementsView.model
 	property alias propertyTreeView: propertyTreeView
 
-	ElementsView {
-		id: elementsView
-		Layout.preferredWidth: 400
-		Layout.fillWidth: true
-		Layout.fillHeight: true
-
+	Rectangle {
+		anchors.fill: parent
+		color: "#fff"
 	}
 
-	// RootTreeView {
-	// 	Layout.fillHeight: true
-	// 	target: targetRect
-	// }
+	RowLayout {
+		anchors.fill: parent
 
-	PropertyTreeView {
-		id: propertyTreeView
-		Layout.preferredWidth: 400
-		Layout.fillHeight: true
-		target: elementsView.selectedObj
+		ElementsView {
+			id: elementsView
+			Layout.fillWidth: true
+			Layout.fillHeight: true
+
+		}
+
+		// RootTreeView {
+		// 	Layout.fillHeight: true
+		// 	target: targetRect
+		// }
+
+		PropertyTreeView {
+			id: propertyTreeView
+			Layout.preferredWidth: devToolsView.width * 0.3
+			Layout.fillHeight: true
+			target: elementsView.selectedObj
+		}
 	}
-
-
 
 	function isDescendantOf(obj, parentObj) {
 		var curItem = obj
