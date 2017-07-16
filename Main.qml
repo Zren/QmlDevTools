@@ -30,6 +30,10 @@ Window {
 
 
 	}
+
+	Item {
+		objectName: "testObj"
+	}
 	Timer {
 		running: true
 		interval: 1000

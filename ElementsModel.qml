@@ -75,8 +75,64 @@ ListModel {
 	}
 
 	property var ignoredProperties: [
-		'parent'
+		'parent',
+		'data',
+		'resources',
+		'children',
+		'visibleChildren',
+		'states',
+		'transitions',
+		'transform',
+		'layer',
+
+		//--- anchors group
+		// http://doc.qt.io/qt-5/qml-qtquick-item.html#anchors-prop
+		'anchors',
+		'top',
+		'bottom',
+		'left',
+		'right',
+		'horizontalCenter',
+		'verticalCenter',
+		'baseline',
+		// 'fill',
+		// 'centerIn',
+		// 'margins',
+		// 'topMargin',
+		// 'bottomMargin',
+		// 'leftMargin',
+		// 'rightMargin',
+		// 'horizontalCenterOffset',
+		// 'verticalCenterOffset',
+		'baselineOffset',
+		// 'alignWhenCentered',
 	]
+
+	property var ignoredDefaults: {
+		"transformOrigin": 4,
+		"scale": 1,
+		"opacity": 1,
+		"smooth": true,
+		"width": 0,
+		"height": 0,
+		"implicitWidth": 0,
+		"implicitHeight": 0,
+		"x": 0,
+		"y": 0,
+		"z": 0,
+		"enabled": true,
+		"objectName": "",
+		"clip": false,
+		"focus": false,
+		"activeFocus": false,
+		"activeFocusOnTab": false,
+		"rotation": 0,
+		"visible": true,
+		"state": "",
+		"childrenRect": Qt.rect(0,0,0,0),
+		"transformOriginPoint": Qt.point(0,0),
+		"antialiasing": false,
+	}
 
 	function parseObj(obj) {
 		// console.log('parseObj', obj, obj.children.length)
@@ -95,6 +151,9 @@ ListModel {
 			if (isSignal(key, value)) {
 			} else if (typeof(value) === "function") {
 			} else if (ignoredProperties.indexOf(key) >= 0) {
+				continue
+			} else if (typeof ignoredDefaults[key] !== 'undefined' && ignoredDefaults[key] == value) {
+				continue
 			} else {
 				el.attributes.push({
 					key: key,
