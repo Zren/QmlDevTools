@@ -30,6 +30,7 @@ FocusScope {
 				spacing: 0
 
 				MouseArea {
+					id: clearLogButton
 					Layout.fillHeight: true
 					Layout.preferredWidth: 40
 					hoverEnabled: true
@@ -40,8 +41,10 @@ FocusScope {
 						anchors.centerIn: parent
 						iconSize: 16
 						path: SvgIconPaths.cancel
-						fillColor: parent.containsMouse && !parent.pressed ? '#333333' : '#6e6e6e'
+						fillColor: clearLogButton.containsMouse && !clearLogButton.pressed ? '#333333' : '#6e6e6e'
 					}
+
+					onClicked: outputView.model.clear()
 				}
 			}
 		}
