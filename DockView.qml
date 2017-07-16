@@ -37,6 +37,9 @@ FocusScope {
 			Layout.fillHeight: true
 
 			function exec(str) {
+				if (str.trim().length == 0) {
+					return
+				}
 				input(str)
 				var comp = 'import QtQuick 2.0; QtObject {\n'
 				comp += 'Component.onCompleted: {\n'
@@ -48,9 +51,9 @@ FocusScope {
 				comp += '} catch (e) {\n'
 				comp += 'outputView.error(e)\n'
 				comp += '}\n'
-				comp += '\ndestroy()'
-				comp += '\n}'
-				comp += '\n}'
+				comp += 'destroy()\n'
+				comp += '}\n'
+				comp += '}\n'
 				Qt.createQmlObject(comp, outputView)
 			}
 
@@ -82,16 +85,41 @@ FocusScope {
 				addMessage('error', str)
 			}
 
-			delegate: Rectangle {
+			delegate: Item {
+				width: parent.width
 				height: row.height
+
+				Rectangle {
+					anchors.fill: parent
+					visible: type == 'error'
+					color: "#fff0f0"
+
+					Rectangle {
+						anchors.left: parent.left
+						anchors.bottom: parent.top
+						anchors.right: parent.right
+						height: 1
+						color: "#ffd7d7"
+					}
+
+					Rectangle {
+						anchors.left: parent.left
+						anchors.bottom: parent.bottom
+						anchors.right: parent.right
+						height: 1
+						color: "#ffd7d7"
+					}
+				}
 
 				RowLayout {
 					id: row
 
 					Item {
+						anchors.top: parent.top
+						anchors.topMargin: 3
 						Layout.preferredWidth: 20
-						Layout.preferredHeight: 12
-						
+						height: 12
+
 						PlasmaCore.IconItem {
 							anchors.fill: parent
 							visible: type == 'error'
@@ -110,23 +138,48 @@ FocusScope {
 									return ''
 								}
 							}
+							fillColor: {
+								if (type == 'input') {
+									return '#bbbbbb'
+								} else if (type == 'output') {
+									return '#959595'
+								} else {
+									return ''
+								}
+							}
 						}
 					}
 					Text {
 						id: messageText
 						Layout.fillWidth: true
 						text: model.message
+						color: {
+							if (type == 'error') {
+								return '#ff2d2d'
+							} else {
+								return '#000000'
+							}
+						}
 					}
 				}
 			}
 		}
-		TextField {
+		TextArea {
+			id: textArea
 			Layout.fillWidth: true
 			Layout.preferredHeight: 30
 
-			onAccepted: {
-				outputView.exec(text)
-				text = ''
+			Keys.onPressed: {
+				if (event.key == Qt.Key_Return) {
+					if (event.modifiers == Qt.NoModifier) {
+						event.accepted = true
+						outputView.exec(text)
+						text = ''
+					} else if (event.modifiers & Qt.ShiftModifier) {
+						event.accepted = true
+						textArea.insert(cursorPosition, '\n')
+					}
+				}
 			}
 		}
 	}
