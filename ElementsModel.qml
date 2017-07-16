@@ -10,6 +10,8 @@ ListModel {
 	property var lastRootObj: null
 	property var rootObj: null
 
+	signal updated()
+
 	onRootObjChanged: update()
 
 	// function appendItem(item) {
@@ -27,6 +29,7 @@ ListModel {
 			lastRootObj = rootObj
 			parseRootObj()
 		}
+		updated()
 	}
 
 	function updateProperty(key) {

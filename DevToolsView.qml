@@ -8,6 +8,12 @@ FocusScope {
 	clip: true
 	focus: true
 
+	property bool ready: false
+	Connections {
+		target: elementsModel
+		onUpdated: devToolsView.ready = true
+	}
+
 	Keys.onPressed: {
 		if (event.matches(StandardKey.Find)) {
 			event.accepted = true

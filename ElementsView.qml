@@ -164,7 +164,10 @@ ListView {
 
 					property var key: el.attributes.get(index).key
 					property var value: el.obj[key]
-					onValueChanged: valueChangedAnimation.running = true
+
+					Component.onCompleted: {
+						valueChanged.connect(valueChangedAnimation.start)
+					}
 
 					Text {
 						text: '&nbsp;'
