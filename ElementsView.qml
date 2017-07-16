@@ -47,7 +47,8 @@ ListView {
 	}
 
 	delegate: MouseArea {
-		width: flow.width
+		id: mouseArea
+		width: elementsView.width
 		height: flow.height
 
 		property var elIndex: index
@@ -80,7 +81,7 @@ ListView {
 		}
 
 		Rectangle {
-			anchors.fill: flow
+			anchors.fill: mouseArea
 			anchors.leftMargin: 3
 			anchors.rightMargin: 3
 			visible: hovered
@@ -89,40 +90,43 @@ ListView {
 		}
 
 		Rectangle {
-			anchors.fill: flow
+			anchors.fill: mouseArea
 			visible: selected
 			color: "#3879d9"
 		}
 
+		MouseArea {
+			id: expandButton
+			anchors.left: parent.left
+			anchors.leftMargin: el.depth * indentWidth
+
+			enabled: el.obj.children.length > 0
+
+			width: expandText.width
+			height: expandText.height
+
+			onClicked: elementsModel.toggleIndex(elIndex)
+
+			Text {
+				id: expandText
+				visible: parent.enabled
+				// text: (el.expanded ? '▼' : '▶') + ' '
+				// text: '▶'
+				// rotation: el.expanded ? 90 : 0
+				text: '▼'
+				rotation: el.expanded ? 0 : -90
+				color: expandoColor
+			}
+		}
+
 		Flow {
 			id: flow
-			anchors.left: parent.left
-			// anchors.leftMargin: el.depth * 36
-			// anchors.right: parent.right
-			leftPadding: el.depth * indentWidth
-			width: elementsView.width
+			anchors.left: expandButton.right
+			anchors.leftMargin: 2
+			anchors.right: parent.right
+			
 
-			MouseArea {
-				id: expandButton
-
-				enabled: el.obj.children.length > 0
-
-				width: expandText.width
-				height: expandText.height
-
-				onClicked: elementsModel.toggleIndex(elIndex)
-
-				Text {
-					id: expandText
-					visible: parent.enabled
-					// text: (el.expanded ? '▼' : '▶') + ' '
-					// text: '▶'
-					// rotation: el.expanded ? 90 : 0
-					text: '▼'
-					rotation: el.expanded ? 0 : -90
-					color: expandoColor
-				}
-			}
+			
 
 			Text {
 				id: openTag
