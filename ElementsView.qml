@@ -9,6 +9,8 @@ ListView {
 	// highlightMoveVelocity: 0
 	highlightMoveDuration: 0
 
+	property var indentWidth: 12
+
 	property alias rootObj: elementsModel.rootObj
 	readonly property var selectedObj: currentItem ? currentItem.el.obj : null
 
@@ -57,7 +59,7 @@ ListView {
 			anchors.left: parent.left
 			// anchors.leftMargin: el.depth * 36
 			// anchors.right: parent.right
-			leftPadding: el.depth * 36
+			leftPadding: el.depth * indentWidth
 			width: elementsView.width
 
 			MouseArea {
