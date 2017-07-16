@@ -74,8 +74,12 @@ ListModel {
 		}
 	}
 
+	property var ignoredProperties: [
+		'parent'
+	]
+
 	function parseObj(obj) {
-		console.log('parseObj', obj, obj.children.length)
+		// console.log('parseObj', obj, obj.children.length)
 		var el = {
 			tagName: valueToString(obj),
 			depth: 0,
@@ -90,6 +94,7 @@ ListModel {
 			var value = obj[key]
 			if (isSignal(key, value)) {
 			} else if (typeof(value) === "function") {
+			} else if (ignoredProperties.indexOf(key) >= 0) {
 			} else {
 				el.attributes.push({
 					key: key,
@@ -142,7 +147,7 @@ ListModel {
 				var el = parseObj(obj)
 				el.depth = parentEl.depth + 1
 				insert(++childIndex, el)
-				logDepth(parentEl.depth, 'expandIndex', parentIndex, 'inserted at', childIndex)
+				// logDepth(parentEl.depth, 'expandIndex', parentIndex, 'inserted at', childIndex)
 				inserted += 1
 			}
 			setProperty(parentIndex, 'expanded', true)
@@ -163,7 +168,7 @@ ListModel {
 			if (childIndex >= 0) {
 				removed += collapseIndex(childIndex)
 				remove(childIndex)
-				logDepth(parentEl.depth, 'collapseIndex', parentIndex, 'removed', childIndex)
+				// logDepth(parentEl.depth, 'collapseIndex', parentIndex, 'removed', childIndex)
 				removed += 1
 			}
 		}
@@ -202,9 +207,9 @@ ListModel {
 
 		var inserted = expandIndex(parentIndex)
 
-		logDepth(parentEl.depth, 'for', parentIndex + inserted, '..', parentIndex)
+		// logDepth(parentEl.depth, 'for', parentIndex + inserted, '..', parentIndex)
 		for (var i = parentIndex + inserted; i > parentIndex; i--) {
-			logDepth(parentEl.depth, 'expandAll child', i)
+			// logDepth(parentEl.depth, 'expandAll child', i)
 			expandAll(i, maxDepth)
 		}
 	}
