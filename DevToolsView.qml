@@ -24,40 +24,50 @@ FocusScope {
 		color: "#fff"
 	}
 
-	RowLayout {
+	ColumnLayout {
 		anchors.fill: parent
 		spacing: 0
 
-		ColumnLayout {
-			Layout.fillWidth: true
-			Layout.fillHeight: true
+		RowLayout {
 			spacing: 0
 
-			ElementsView {
-				id: elementsView
+			ColumnLayout {
 				Layout.fillWidth: true
 				Layout.fillHeight: true
+				spacing: 0
+
+				ElementsView {
+					id: elementsView
+					Layout.fillWidth: true
+					Layout.fillHeight: true
+				}
+
+				BreadcrumbView {
+					id: breadcrumbView
+					Layout.fillWidth: true
+					elementsView: elementsView
+				}
+
+				FindElementView {
+					id: findElementView
+					visible: false
+					Layout.fillWidth: true
+					elementsView: elementsView
+				}
 			}
 
-			BreadcrumbView {
-				id: breadcrumbView
-				Layout.fillWidth: true
-				elementsView: elementsView
-			}
-
-			FindElementView {
-				id: findElementView
-				visible: false
-				Layout.fillWidth: true
-				elementsView: elementsView
+			PropertyTreeView {
+				id: propertyTreeView
+				Layout.preferredWidth: devToolsView.width * 0.3
+				Layout.fillHeight: true
+				target: elementsView.selectedObj
 			}
 		}
 
-		PropertyTreeView {
-			id: propertyTreeView
-			Layout.preferredWidth: devToolsView.width * 0.3
-			Layout.fillHeight: true
-			target: elementsView.selectedObj
+		DockView {
+			id: dockView
+			Layout.fillWidth: true
+			Layout.preferredHeight: devToolsView.height * 0.3
 		}
 	}
 
