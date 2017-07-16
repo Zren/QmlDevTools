@@ -28,17 +28,16 @@ Window {
 
 		function testFn() {}
 
-
+		Timer {
+			running: true
+			interval: 1000
+			repeat: true
+			onTriggered: targetRect.testNum += 1
+		}
 	}
 
 	Item {
 		objectName: "testObj"
-	}
-	Timer {
-		running: true
-		interval: 1000
-		repeat: true
-		onTriggered: targetRect.testNum += 1
 	}
 
 	DevToolsView {
