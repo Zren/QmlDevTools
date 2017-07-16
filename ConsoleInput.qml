@@ -31,16 +31,5 @@ TextArea {
 		id: style
 
 		textMargin: 0
-		
-		frame: Item {
-			Rectangle {
-				anchors.left: parent.left
-				anchors.top: parent.top
-				anchors.right: parent.right
-				height: 1
-				color: "#f0f0f0"
-			}
-
-		}
 	}
 }

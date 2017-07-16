@@ -92,6 +92,15 @@ ListView {
 			}
 		}
 
+		Rectangle {
+			anchors.left: parent.left
+			anchors.bottom: parent.bottom
+			anchors.right: parent.right
+			visible: type == 'output'
+			height: 1
+			color: "#f0f0f0"
+		}
+
 		RowLayout {
 			id: row
 			spacing: 0
