@@ -31,6 +31,8 @@ TreeView {
 
 		property var lastTarget: null
 		property var target: null
+		property var propMapping: { return {} }
+		property var propListeners: { return {} }
 
 		onTargetChanged: update()
 		
@@ -44,18 +46,29 @@ TreeView {
 				"val": valueString,
 			})
 		}
-		function updateProperty(key) {
-			for (var i = 0; i < count; i++) {
-				var row = get(i)
-				if (row.name == key) {
-					var value = target[key]
-					var valueString = Util.valueToString(value)
-					if (row.val !== valueString) {
-						console.log(i, key, row.val, valueString)
-						setProperty(i, "val", valueString)
+		function getIndexByKey(key) {
+			var i = propMapping[key]
+			if (typeof i === "undefined") {
+				for (var i = 0; i < count; i++) {
+					var row = get(i)
+					if (row.name == key) {
+						propMapping[key] = i
+						return i
 					}
-					break;
 				}
+			} else {
+				return i
+			}
+		}
+		function updateProperty(key) {
+			console.log('propTree.updateProperty', key)
+			var i = getIndexByKey(key)
+			var row = get(i)
+			var value = target[key]
+			var valueString = Util.valueToString(value)
+			if (row.val !== valueString) {
+				console.log(i, key, row.val, valueString)
+				setProperty(i, "val", valueString)
 			}
 		}
 		function updateAllProperties() {
@@ -83,10 +96,18 @@ TreeView {
 				if (Util.isChangedSignal(target, key)) {
 					// console.log('bindAllSignals isChangedSignal', target, key, target[key])
 					try {
-						target[key].connect(update)
+						if (typeof propListeners[key] === "function") {
+							console.log('propListeners[key]', key, 'was not deleted and is probably still connected')
+						}
+						// propListeners[key] = function() {
+						// 	updateProperty(key)
+						// }
+						var propKey = key.substr(0, key.length - 'Changed'.length)
+						propListeners[key] = updateProperty.bind(null, propKey)
+						target[key].connect(propListeners[key])
 					} catch (e) {
 						console.log('err', e)
-						console.log('bindAllSignals isChangedSignal', target, key, value)
+						console.log('bindAllSignals isChangedSignal', target, key, target[key])
 
 					}
 				}
@@ -101,10 +122,11 @@ TreeView {
 				var key = keys[i]
 				if (Util.isChangedSignal(lastTarget, key)) {
 					try {
-						lastTarget[key].disconnect(update)
+						lastTarget[key].disconnect(propListeners[key])
+						delete propListeners[key]
 					} catch (e) {
 						console.log('err', e)
-						console.log('unbindAllSignals isChangedSignal', lastTarget, key, value)
+						console.log('unbindAllSignals isChangedSignal', lastTarget, key, lastTarget[key])
 					}
 				}
 			}
@@ -116,6 +138,8 @@ TreeView {
 			} else {
 				unbindAllSignals()
 				clear()
+				propMapping = {}
+				propListeners = {}
 				lastTarget = target
 				parseTarget()
 				bindAllSignals()
