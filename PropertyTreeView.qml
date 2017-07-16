@@ -90,24 +90,11 @@ TreeView {
 				&& obj.hasOwnProperty(key.substr(0, key.length - 'Changed'.length))
 		}
 
-		function isDescendant(obj, parentObj) {
-			var curItem = obj
-			// while (curItem.parent) {
-			for (var i = 0; i < 1000; i++) { // Hard limit
-				if (!curItem.parent) {
-					return false
-				} else if (curItem.parent == parentObj) {
-					return true
-				}
-			}
-			return false // Reached hard limit
-		}
-
 		function bindAllSignals() {
 			if (isNull(target)) {
 				return
 			}
-			if (isDescendant(target, devToolsView)) {
+			if (devToolsView.isDescendant(target)) {
 				console.log('isDescendant of devToolsView, skipping bindings')
 				return
 			}

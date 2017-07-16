@@ -29,4 +29,23 @@ RowLayout {
 		Layout.fillHeight: true
 		target: elementsView.selectedObj
 	}
+
+
+
+	function isDescendantOf(obj, parentObj) {
+		var curItem = obj
+		// while (curItem.parent) {
+		for (var i = 0; i < 1000; i++) { // Hard limit
+			if (!curItem.parent) {
+				return false
+			} else if (curItem.parent == parentObj) {
+				return true
+			}
+		}
+		return false // Reached hard limit
+	}
+
+	function isDescendant(obj) {
+		return isDescendantOf(obj, devToolsView)
+	}
 }

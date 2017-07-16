@@ -7,7 +7,7 @@ ListView {
 
 	boundsBehavior: Flickable.StopAtBounds
 	// highlightMoveVelocity: 0
-	// highlightMoveDuration: 400
+	highlightMoveDuration: 0
 
 	property alias rootObj: elementsModel.rootObj
 	readonly property var selectedObj: currentItem ? currentItem.el.obj : null
