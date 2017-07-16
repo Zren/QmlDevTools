@@ -4,10 +4,10 @@ import QtQuick.Controls 1.4
 
 import "util.js" as Util
 
-Item {
+Column {
 	id: breadcrumbView
 
-	implicitHeight: 40
+	height: 19
 
 	property var elementsView: null
 	readonly property var hoveredObj: elementsView ? elementsView.hoveredObj : null
@@ -37,15 +37,14 @@ Item {
 	}
 
 	Rectangle {
-		anchors.left: parent.left
-		anchors.top: parent.top
-		anchors.right: parent.right
+		width: parent.width
 		height: 1
 		color: "#dfdfdf"
 	}
 
 	ListView {
-		anchors.fill: parent
+		width: parent.width
+		height: 18
 		orientation: ListView.Horizontal
 
 		model: ListModel {
@@ -54,7 +53,7 @@ Item {
 		delegate: MouseArea {
 			property int padding: 8
 			width: padding + label.width + padding
-			height: padding + label.height + padding
+			height: label.height
 
 			hoverEnabled: true
 
