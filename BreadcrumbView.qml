@@ -9,7 +9,9 @@ Item {
 
 	implicitHeight: 40
 
-	property var selectedObj: null
+	property var elementsView: null
+	readonly property var hoveredObj: elementsView ? elementsView.hoveredObj : null
+	readonly property var selectedObj: elementsView ? elementsView.selectedObj : null
 	property var deepestChild: null
 
 	onSelectedObjChanged: {
@@ -44,24 +46,46 @@ Item {
 
 	ListView {
 		anchors.fill: parent
+		orientation: ListView.Horizontal
 
 		model: ListModel {
 			id: breadcrumbModel
 		}
-		delegate: Item {
-			width: label.width
-			height: label.height
+		delegate: MouseArea {
+			property int padding: 8
+			width: padding + label.width + padding
+			height: padding + label.height + padding
 
-			MouseArea {
-				anchors.fill: parent
+			hoverEnabled: true
+
+			onContainsMouseChanged: {
+				if (containsMouse) {
+					elementsView.hoveredObj = model.obj
+				} else if (hoveredObj == model.obj) {
+					elementsView.hoveredObj = null
+				}
+			}
+
+			onClicked: {
+				elementsView.setSelectedObj(model.obj)
 			}
 
 			Rectangle {
-				color: "#fff"
+				anchors.fill: parent
+				color: {
+					if (model.obj == selectedObj) {
+						return "#3879d9"
+					} else if (model.obj == hoveredObj) {
+						return "#dfdfdf"
+					} else {
+						return "#fff"
+					}
+				}
 			}
 
 			Text {
 				id: label
+				anchors.centerIn: parent
 				text: model.tagName
 			}
 		}

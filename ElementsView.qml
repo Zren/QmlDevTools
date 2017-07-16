@@ -11,8 +11,21 @@ ListView {
 
 	property var indentWidth: 12
 
+	property alias elementsModel: elementsModel
 	property alias rootObj: elementsModel.rootObj
 	readonly property var selectedObj: currentItem ? currentItem.el.obj : null
+	property var hoveredObj: null
+
+	function setSelectedObj(nextObj) {
+		for (var i = 0; i < count; i++) {
+			var el = model.get(i)
+			if (el.obj == nextObj) {
+				currentIndex = i
+				return
+			}
+		}
+		currentIndex = -1
+	}
 
 	model: ElementsModel {
 		id: elementsModel
@@ -41,12 +54,23 @@ ListView {
 		property var elIndex: index
 		property var el: model
 		property bool selected: index == currentIndex
+		property bool hovered: el.obj == hoveredObj
 
 		property string expandoColor: selected ? "#fff" : "#6e6e6e"
 		property string tagColor: selected ? "#fff" : "#a0439a"
 		property string keyColor: selected ? "#a1b3cf" : "#9a6127"
 		property string valueColor: selected ? "#fff" : "#3879d9"
 		property string otherColor: selected ? "#a1b3cf" : "#a1b3cf"
+
+		hoverEnabled: true
+
+		onContainsMouseChanged: {
+			if (containsMouse) {
+				elementsView.hoveredObj = el.obj
+			} else if (hoveredObj == el.obj) {
+				elementsView.hoveredObj = null
+			}
+		}
 
 		onClicked: select()
 
@@ -56,6 +80,14 @@ ListView {
 			// focus = true
 		}
 
+		Rectangle {
+			anchors.fill: flow
+			anchors.leftMargin: 3
+			anchors.rightMargin: 3
+			visible: hovered
+			color: "#eaf1fb"
+			radius: 4
+		}
 
 		Rectangle {
 			anchors.fill: flow

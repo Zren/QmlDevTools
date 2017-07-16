@@ -32,7 +32,7 @@ Item {
 			BreadcrumbView {
 				id: breadcrumbView
 				Layout.fillWidth: true
-				selectedObj: elementsView.selectedObj
+				elementsView: elementsView
 			}
 		}
 		
