@@ -99,11 +99,8 @@ TreeView {
 						if (typeof propListeners[key] === "function") {
 							console.log('propListeners[key]', key, 'was not deleted and is probably still connected')
 						}
-						// propListeners[key] = function() {
-						// 	updateProperty(key)
-						// }
 						var propKey = key.substr(0, key.length - 'Changed'.length)
-						propListeners[key] = updateProperty.bind(null, propKey)
+						propListeners[key] = updateProperty.bind(targetModel, propKey)
 						target[key].connect(propListeners[key])
 					} catch (e) {
 						console.log('err', e)

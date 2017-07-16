@@ -165,10 +165,38 @@ ListView {
 					height: childrenRect.height
 
 					property var key: el.attributes.get(index).key
+					// property var value: el.attributes.get(index).value
 					property var value: el.obj[key]
 
+					property bool animationsConnected: false
+					property bool showUpdates: false
+					onShowUpdatesChanged: {
+						if (showUpdates) {
+							connectAnimations()
+						} else {
+							disconnectAnimations()
+						}
+					}
+
+					function connectAnimations() {
+						if (!animationsConnected) {
+							valueChanged.connect(valueChangedAnimation.start)
+							animationsConnected = true
+						}
+					}
+					function disconnectAnimations() {
+						if (animationsConnected) {
+							valueChanged.disconnect(valueChangedAnimation.start)
+							animationsConnected = false
+						}
+					}
+
+
 					Component.onCompleted: {
-						valueChanged.connect(valueChangedAnimation.start)
+						connectAnimations()
+					}
+					Component.onDestruction: {
+						disconnectAnimations()
 					}
 
 					Text {
@@ -185,7 +213,7 @@ ListView {
 
 						Text {
 							id: valueText
-							text: value
+							text: '' + value
 							color: valueColor
 						}
 
