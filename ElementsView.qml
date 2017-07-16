@@ -31,6 +31,7 @@ ListView {
 		property var el: model
 		property bool selected: index == currentIndex
 
+		property string expandoColor: selected ? "#fff" : "#6e6e6e"
 		property string tagColor: selected ? "#fff" : "#a0439a"
 		property string keyColor: selected ? "#a1b3cf" : "#9a6127"
 		property string valueColor: selected ? "#fff" : "#3879d9"
@@ -77,6 +78,7 @@ ListView {
 					// rotation: el.expanded ? 90 : 0
 					text: '▼'
 					rotation: el.expanded ? 0 : -90
+					color: expandoColor
 				}
 			}
 
