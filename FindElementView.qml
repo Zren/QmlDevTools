@@ -20,6 +20,7 @@ Rectangle {
 			textField.focus = true
 		} else {
 			query = ''
+			elementsView.focus = true
 		}
 	}
 
@@ -103,6 +104,8 @@ Rectangle {
 				visible: query
 				text: "" + currentMatch + " of " + totalMatches
 			}
+
+			Keys.onEscapePressed: findElementView.visible = false
 		}
 
 		Button {
