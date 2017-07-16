@@ -129,9 +129,12 @@ ListModel {
 
 	function expandIndex(parentIndex) {
 		var parentEl = get(parentIndex)
-		if (parentEl.expanded) {
+		if (parentEl.expanded)
 			return 0
-		}
+		if (parentEl.obj == elementsModel)
+			return 0
+		if (parentEl.obj == elementsView)
+			return 0
 
 		var childIndex = parentIndex
 		var inserted = 0

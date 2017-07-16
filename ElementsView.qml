@@ -3,7 +3,11 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 
 ListView {
-	id: treeView
+	id: elementsView
+
+	boundsBehavior: Flickable.StopAtBounds
+	// highlightMoveVelocity: 0
+	// highlightMoveDuration: 400
 
 	property alias rootObj: elementsModel.rootObj
 	readonly property var selectedObj: currentItem ? currentItem.el.obj : null
@@ -52,7 +56,7 @@ ListView {
 			// anchors.leftMargin: el.depth * 36
 			// anchors.right: parent.right
 			leftPadding: el.depth * 36
-			width: treeView.width
+			width: elementsView.width
 
 			MouseArea {
 				id: expandButton

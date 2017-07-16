@@ -37,32 +37,13 @@ Window {
 		onTriggered: targetRect.testNum += 1
 	}
 
-	RowLayout {
-		anchors.fill: parent
-
-		ElementsView {
-			id: elementsView
-			Layout.preferredWidth: 400
-			Layout.fillWidth: true
-			Layout.fillHeight: true
-
-		}
-
-		// RootTreeView {
-		// 	Layout.fillHeight: true
-		// 	target: targetRect
-		// }
-
-		PropertyTreeView {
-			Layout.preferredWidth: 400
-			Layout.fillHeight: true
-			target: elementsView.selectedObj
-		}
+	DevToolsView {
+		id: devToolsView
 	}
 
 	Component.onCompleted: {
-		elementsView.model.setTarget(targetRect)
-		elementsView.model.expandAll()
-		elementsView.focus = true
+		devToolsView.elementsModel.setTarget(targetRect)
+		devToolsView.elementsModel.expandAll()
+		devToolsView.elementsView.focus = true
 	}
 }

@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 
 TreeView {
-	id: treeView
+	id: propertyTreeView
 
 	property alias target: targetModel.target
 
@@ -84,19 +84,45 @@ TreeView {
 			}
 		}
 
-		function isSignal(key, value) {
-			return typeof(value) === "function" && endsWith(key, 'Changed')
+		function isChangedSignal(obj, key) {
+			return typeof(obj[key]) === "function"
+				&& endsWith(key, 'Changed')
+				&& obj.hasOwnProperty(key.substr(0, key.length - 'Changed'.length))
 		}
+
+		function isDescendant(obj, parentObj) {
+			var curItem = obj
+			// while (curItem.parent) {
+			for (var i = 0; i < 1000; i++) { // Hard limit
+				if (!curItem.parent) {
+					return false
+				} else if (curItem.parent == parentObj) {
+					return true
+				}
+			}
+			return false // Reached hard limit
+		}
+
 		function bindAllSignals() {
 			if (isNull(target)) {
+				return
+			}
+			if (isDescendant(target, devToolsView)) {
+				console.log('isDescendant of devToolsView, skipping bindings')
 				return
 			}
 			var keys = Object.keys(target)
 			for (var i in keys) {
 				var key = keys[i]
-				var value = lastTarget[key]
-				if (isSignal(key, value)) {
-					value.connect(update)
+				if (isChangedSignal(target, key)) {
+					// console.log('bindAllSignals isChangedSignal', target, key, target[key])
+					try {
+						target[key].connect(update)
+					} catch (e) {
+						console.log('err', e)
+						console.log('bindAllSignals isChangedSignal', target, key, value)
+
+					}
 				}
 			}
 		}
@@ -107,9 +133,13 @@ TreeView {
 			var keys = Object.keys(lastTarget)
 			for (var i in keys) {
 				var key = keys[i]
-				var value = lastTarget[key]
-				if (isSignal(key, value)) {
-					value.disconnect(update)
+				if (isChangedSignal(lastTarget, key)) {
+					try {
+						lastTarget[key].disconnect(update)
+					} catch (e) {
+						console.log('err', e)
+						console.log('unbindAllSignals isChangedSignal', lastTarget, key, value)
+					}
 				}
 			}
 		}
@@ -135,8 +165,7 @@ TreeView {
 			keys.sort()
 			for (var i in keys) {
 				var key = keys[i]
-				var value = target[key]
-				if (isSignal(key, value)) {
+				if (isChangedSignal(target, key)) {
 					// skip
 				} else {
 					appendProperty(key)
