@@ -2,6 +2,8 @@ import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 
+import "util.js" as Util
+
 TreeView {
 	id: propertyTreeView
 
@@ -32,27 +34,10 @@ TreeView {
 
 		onTargetChanged: update()
 		
-		function isNull(obj) {
-			return obj === null || typeof(obj) === 'undefined'
-		}
-
-		function valueToString(value) {
-			if (value === null) {
-				return "null"
-			} else if (typeof(value) === "undefined") {
-				return "undefined"
-			} else {
-				return value.toString()
-			}
-		}
-		function endsWith(str, suffix) {
-			var index = str.indexOf(suffix)
-			return index >= 0 && index == str.length - suffix.length
-		}
 		function appendProperty(key) {
 			var value = target[key]
 			var valueType = typeof(value)
-			var valueString = valueToString(value)
+			var valueString = Util.valueToString(value)
 			append({
 				"name": key,
 				"type": valueType,
@@ -64,7 +49,7 @@ TreeView {
 				var row = get(i)
 				if (row.name == key) {
 					var value = target[key]
-					var valueString = valueToString(value)
+					var valueString = Util.valueToString(value)
 					if (row.val !== valueString) {
 						console.log(i, key, row.val, valueString)
 						setProperty(i, "val", valueString)
@@ -74,7 +59,7 @@ TreeView {
 			}
 		}
 		function updateAllProperties() {
-			if (isNull(target)) {
+			if (Util.isNull(target)) {
 				return
 			}
 			var keys = Object.keys(target)
@@ -84,14 +69,8 @@ TreeView {
 			}
 		}
 
-		function isChangedSignal(obj, key) {
-			return typeof(obj[key]) === "function"
-				&& endsWith(key, 'Changed')
-				&& obj.hasOwnProperty(key.substr(0, key.length - 'Changed'.length))
-		}
-
 		function bindAllSignals() {
-			if (isNull(target)) {
+			if (Util.isNull(target)) {
 				return
 			}
 			if (devToolsView.isDescendant(target)) {
@@ -101,7 +80,7 @@ TreeView {
 			var keys = Object.keys(target)
 			for (var i in keys) {
 				var key = keys[i]
-				if (isChangedSignal(target, key)) {
+				if (Util.isChangedSignal(target, key)) {
 					// console.log('bindAllSignals isChangedSignal', target, key, target[key])
 					try {
 						target[key].connect(update)
@@ -114,13 +93,13 @@ TreeView {
 			}
 		}
 		function unbindAllSignals() {
-			if (isNull(lastTarget)) {
+			if (Util.isNull(lastTarget)) {
 				return
 			}
 			var keys = Object.keys(lastTarget)
 			for (var i in keys) {
 				var key = keys[i]
-				if (isChangedSignal(lastTarget, key)) {
+				if (Util.isChangedSignal(lastTarget, key)) {
 					try {
 						lastTarget[key].disconnect(update)
 					} catch (e) {
@@ -144,7 +123,7 @@ TreeView {
 		}
 
 		function parseTarget() {
-			if (isNull(target)) {
+			if (Util.isNull(target)) {
 				console.log('targetIsNull', target)
 				return
 			}
@@ -152,7 +131,7 @@ TreeView {
 			keys.sort()
 			for (var i in keys) {
 				var key = keys[i]
-				if (isChangedSignal(target, key)) {
+				if (Util.isChangedSignal(target, key)) {
 					// skip
 				} else {
 					appendProperty(key)

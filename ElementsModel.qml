@@ -2,6 +2,8 @@ import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 
+import "util.js" as Util
+
 ListModel {
 	id: elementsModel
 
@@ -9,35 +11,13 @@ ListModel {
 	property var rootObj: null
 
 	onRootObjChanged: update()
-	
-	function isNull(obj) {
-		return obj === null || typeof(obj) === 'undefined'
-	}
-
-	function valueToString(value) {
-		if (value === null) {
-			return "null"
-		} else if (typeof(value) === "undefined") {
-			return "undefined"
-		} else {
-			return value.toString()
-		}
-	}
-	function endsWith(str, suffix) {
-		var index = str.indexOf(suffix)
-		return index >= 0 && index == str.length - suffix.length
-	}
 
 	// function appendItem(item) {
-	// 	var valueString = valueToString(item)
+	// 	var valueString = Util.valueToString(item)
 	// 	append({
 	// 		"val": valueString,
 	// 	})
 	// }
-
-	function isSignal(key, value) {
-		return typeof(value) === "function" && endsWith(key, 'Changed')
-	}
 
 	function update() {
 		if (rootObj === lastRootObj) {
@@ -54,7 +34,7 @@ ListModel {
 			var row = get(i)
 			if (row.name == key) {
 				var value = target[key]
-				var valueString = valueToString(value)
+				var valueString = Util.valueToString(value)
 				if (row.val !== valueString) {
 					console.log(i, key, row.val, valueString)
 					setProperty(i, "val", valueString)
@@ -64,7 +44,7 @@ ListModel {
 		}
 	}
 	function updateAllProperties() {
-		if (isNull(target)) {
+		if (Util.isNull(target)) {
 			return
 		}
 		var keys = Object.keys(target)
@@ -137,7 +117,7 @@ ListModel {
 	function parseObj(obj) {
 		// console.log('parseObj', obj, obj.children.length)
 		var el = {
-			tagName: valueToString(obj),
+			tagName: Util.valueToString(obj),
 			depth: 0,
 			expanded: false,
 			attributes: [],
@@ -148,7 +128,7 @@ ListModel {
 		for (var i in keys) {
 			var key = keys[i]
 			var value = obj[key]
-			if (isSignal(key, value)) {
+			if (Util.isChangedSignal(obj, key)) {
 			} else if (typeof(value) === "function") {
 			} else if (ignoredProperties.indexOf(key) >= 0) {
 				continue
@@ -157,7 +137,7 @@ ListModel {
 			} else {
 				el.attributes.push({
 					key: key,
-					value: valueToString(value),
+					value: Util.valueToString(value),
 				})
 			}
 		}
@@ -283,7 +263,7 @@ ListModel {
 
 	// function getTreeItem(item) {
 	// 	return {
-	// 		"val": valueToString(item),
+	// 		"val": Util.valueToString(item),
 	// 		"contents": [],
 	// 	}
 	// }
@@ -299,7 +279,7 @@ ListModel {
 	// }
 
 	function setTarget(target) {
-		if (isNull(target)) {
+		if (Util.isNull(target)) {
 			console.log('target.isNull', target)
 			return
 		}

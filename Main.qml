@@ -38,6 +38,15 @@ Window {
 
 	Item {
 		objectName: "testObj"
+
+		Item {
+			Item {
+				
+			}
+		}
+		Item {
+			
+		}
 	}
 
 	DevToolsView {

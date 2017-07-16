@@ -16,13 +16,26 @@ Item {
 
 	RowLayout {
 		anchors.fill: parent
+		spacing: 0
 
-		ElementsView {
-			id: elementsView
+		ColumnLayout {
 			Layout.fillWidth: true
 			Layout.fillHeight: true
+			spacing: 0
 
+			ElementsView {
+				id: elementsView
+				Layout.fillWidth: true
+				Layout.fillHeight: true
+			}
+
+			BreadcrumbView {
+				id: breadcrumbView
+				Layout.fillWidth: true
+				selectedObj: elementsView.selectedObj
+			}
 		}
+		
 
 		// RootTreeView {
 		// 	Layout.fillHeight: true
