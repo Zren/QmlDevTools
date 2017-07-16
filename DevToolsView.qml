@@ -36,6 +36,12 @@ Item {
 				Layout.fillWidth: true
 				elementsView: elementsView
 			}
+
+			FindElementView {
+				id: findElementView
+				Layout.fillWidth: true
+				elementsView: elementsView
+			}
 		}
 		
 
