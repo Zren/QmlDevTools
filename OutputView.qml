@@ -17,14 +17,14 @@ ListView {
 		var comp = 'import QtQuick 2.0; QtObject {\n'
 		comp += 'Component.onCompleted: {\n'
 		comp += 'try {\n'
-		var str1 = str.replace('console.log(', 'outputView.log(')
-		var str2 = str1.substr(0, str1.lastIndexOf('\n') - 1)
-		var str3 = str1.substr(str1.lastIndexOf('\n') + 1)
-		console.log('str2', str2)
-		console.log('str3', str3)
-		comp += str2
+		var parsedStr = str.trim()
+		parsedStr = parsedStr.replace('console.log(', 'outputView.log(')
+		parsedStr = parsedStr.replace('$0', 'elementsView.selectedObj')
+		var str1 = parsedStr.substr(0, parsedStr.lastIndexOf('\n') - 1)
+		var str2 = parsedStr.substr(parsedStr.lastIndexOf('\n') + 1)
+		comp += str1
 		comp += 'var _result = ('
-		comp += str3
+		comp += str2
 		comp += ')\n'
 		comp += 'outputView.output(_result)\n'
 		comp += '} catch (e) {\n'
