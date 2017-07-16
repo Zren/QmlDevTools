@@ -23,6 +23,15 @@ Rectangle {
 		}
 	}
 
+	onQueryChanged: {
+		if (query) {
+			selectMatch(1)
+		} else {
+			currentMatch = 0
+			totalMatches = 0
+		}
+	}
+
 	function selectMatch(m) { // starts at 1
 		var n = 0
 		var mIndex = -1
@@ -81,10 +90,6 @@ Rectangle {
 			placeholderText: 'Search by element type'
 			Layout.fillWidth: true
 			Layout.fillHeight: true
-
-			onTextChanged: {
-				selectMatch(1)
-			}
 
 			onAccepted: {
 				nextMatch()
