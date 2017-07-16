@@ -23,7 +23,10 @@ TextArea {
 		if (event.key == Qt.Key_Return) {
 			if (event.modifiers == Qt.NoModifier) {
 				event.accepted = true
-				history.push(text)
+				if (historyIndex < history.length - 1) {
+					history[history.length - 1] = text
+				}
+				history.push('')
 				historyIndex = history.length - 1
 				console.log('history insert', historyIndex)
 				outputView.exec(text)
