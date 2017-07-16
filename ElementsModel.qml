@@ -11,6 +11,7 @@ ListModel {
 	property var rootObj: null
 
 	signal updated()
+	signal elementAdded(var element)
 
 	onRootObjChanged: update()
 
@@ -151,6 +152,7 @@ ListModel {
 	function parseRootObj() {
 		var el = parseObj(rootObj)
 		append(el)
+		elementAdded(el)
 		// expandObj(rootObj)
 	}
 
@@ -190,6 +192,7 @@ ListModel {
 				var el = parseObj(obj)
 				el.depth = parentEl.depth + 1
 				insert(++childIndex, el)
+				elementAdded(el)
 				// logDepth(parentEl.depth, 'expandIndex', parentIndex, 'inserted at', childIndex)
 				inserted += 1
 			}

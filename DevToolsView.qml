@@ -1,6 +1,7 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.1
 
 FocusScope {
 	id: devToolsView
@@ -65,6 +66,14 @@ FocusScope {
 			TabView {
 				Layout.preferredWidth: devToolsView.width * 0.3
 				Layout.fillHeight: true
+
+				Tab {
+					title: "Plasma"
+					PlasmaShortcutsView {
+						id: plasmaShortcutsView
+						elementsView: devToolsView.elementsView
+					}
+				}
 				
 				Tab {
 					title: "Properties"
@@ -75,12 +84,7 @@ FocusScope {
 					}
 				}
 
-				Tab {
-					title: "Plasma"
-					Item {
-
-					}
-				}
+				style: TabViewStyle {}
 			}
 		}
 

@@ -21,6 +21,17 @@ ScrollingListView {
 		listView.currentIndex = -1
 	}
 
+	function setSelectedTagId(tagId) {
+		for (var i = 0; i < listView.count; i++) {
+			var el = model.get(i)
+			if (el.tagId == tagId) {
+				listView.currentIndex = i
+				return
+			}
+		}
+		listView.currentIndex = -1
+	}
+
 	// onFocusChanged: {
 	// 	console.log('ScrollView.focus', focus)
 	// 	if (focus) {
