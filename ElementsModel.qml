@@ -66,6 +66,7 @@ ListModel {
 		'states',
 		'transitions',
 		'transform',
+		'transformOriginPoint',
 		'layer',
 
 		//--- anchors group
@@ -113,7 +114,6 @@ ListModel {
 		"visible": true,
 		"state": "",
 		"childrenRect": Qt.rect(0,0,0,0),
-		"transformOriginPoint": Qt.point(0,0),
 		"antialiasing": false,
 	}
 
