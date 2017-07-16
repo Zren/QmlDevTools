@@ -109,7 +109,7 @@ ListView {
 
 			Text {
 				id: endTag
-				text: '<font color="' + otherColor + '">&gt;"</font>'
+				text: '<font color="' + otherColor + '">&gt;</font>'
 			}
 		}
 	}
