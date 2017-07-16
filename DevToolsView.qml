@@ -47,6 +47,7 @@ FocusScope {
 
 			FindElementView {
 				id: findElementView
+				visible: false
 				Layout.fillWidth: true
 				elementsView: elementsView
 			}
