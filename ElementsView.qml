@@ -75,9 +75,8 @@ ListView {
 		onClicked: select()
 
 		function select() {
-			// elementsModel.selectedObj = el.obj
 			currentIndex = index
-			// focus = true
+			elementsView.focus = true
 		}
 
 		Rectangle {
