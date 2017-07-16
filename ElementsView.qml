@@ -19,10 +19,19 @@ ListView {
 	}
 
 	Keys.onLeftPressed: {
-		elementsModel.collapseIndex(currentIndex)
+		if (currentItem.el.expanded) {
+			elementsModel.collapseIndex(currentIndex)
+		} else {
+			decrementCurrentIndex()
+		}
 	}
 	Keys.onRightPressed: {
-		elementsModel.expandIndex(currentIndex)
+		if (currentItem.el.expanded) {
+			incrementCurrentIndex()
+		} else {
+			elementsModel.expandIndex(currentIndex)
+		}
+		
 	}
 
 	delegate: MouseArea {
