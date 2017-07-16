@@ -22,6 +22,7 @@ FocusScope {
 	}
 
 	property alias elementsView: elementsView
+	property alias elementsListView: elementsView.listView
 	property alias elementsModel: elementsView.model
 	property alias propertyTreeView: propertyTreeView
 

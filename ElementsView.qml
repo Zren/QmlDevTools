@@ -2,32 +2,35 @@ import QtQuick 2.6
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 
-ListView {
+ScrollingListView {
 	id: elementsView
-
-	clip: true
-
-	boundsBehavior: Flickable.StopAtBounds
-	// highlightMoveVelocity: 0
-	highlightMoveDuration: 0
+	property alias rootObj: elementsModel.rootObj
+	readonly property var selectedObj: listView.currentItem ? listView.currentItem.el.obj : null
+	property var hoveredObj: null
 
 	property var indentWidth: 12
 
-	property alias elementsModel: elementsModel
-	property alias rootObj: elementsModel.rootObj
-	readonly property var selectedObj: currentItem ? currentItem.el.obj : null
-	property var hoveredObj: null
-
 	function setSelectedObj(nextObj) {
-		for (var i = 0; i < count; i++) {
+		for (var i = 0; i < listView.count; i++) {
 			var el = model.get(i)
 			if (el.obj == nextObj) {
-				currentIndex = i
+				listView.currentIndex = i
 				return
 			}
 		}
-		currentIndex = -1
+		listView.currentIndex = -1
 	}
+
+	// onFocusChanged: {
+	// 	console.log('ScrollView.focus', focus)
+	// 	if (focus) {
+	// 		// listView.focus = true
+	// 		listView.forceActiveFocus()
+	// 	}
+	// }
+	
+	// highlightMoveVelocity: 0
+	highlightMoveDuration: 0
 
 	model: ElementsModel {
 		id: elementsModel
@@ -37,12 +40,12 @@ ListView {
 		if (currentItem.el.expanded) {
 			elementsModel.collapseIndex(currentIndex)
 		} else {
-			decrementCurrentIndex()
+			listView.decrementCurrentIndex()
 		}
 	}
 	Keys.onRightPressed: {
 		if (currentItem.el.expanded) {
-			incrementCurrentIndex()
+			listView.incrementCurrentIndex()
 		} else {
 			elementsModel.expandIndex(currentIndex)
 		}
@@ -50,12 +53,12 @@ ListView {
 
 	delegate: MouseArea {
 		id: mouseArea
-		width: elementsView.width
+		width: listView.width
 		height: flow.height
 
 		property var elIndex: index
 		property var el: model
-		property bool selected: index == currentIndex
+		property bool selected: index == listView.currentIndex
 		property bool hovered: el.obj == hoveredObj
 
 		property string expandoColor: selected ? "#fff" : "#6e6e6e"
@@ -77,7 +80,7 @@ ListView {
 		onClicked: select()
 
 		function select() {
-			currentIndex = index
+			listView.currentIndex = index
 			elementsView.focus = true
 		}
 
