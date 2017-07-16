@@ -7,6 +7,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 ListView {
 	id: outputView
 
+	interactive: false
+
 	function exec(str) {
 		if (str.trim().length == 0) {
 			return
