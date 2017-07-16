@@ -117,7 +117,8 @@ ListModel {
 	function parseObj(obj) {
 		// console.log('parseObj', obj, obj.children.length)
 		var el = {
-			tagName: Util.valueToString(obj),
+			tagId: Util.valueToString(obj),
+			tagName: Util.getTagName(obj),
 			depth: 0,
 			expanded: false,
 			attributes: [],
