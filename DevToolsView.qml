@@ -24,7 +24,6 @@ FocusScope {
 	property alias elementsView: elementsView
 	property alias elementsListView: elementsView.listView
 	property alias elementsModel: elementsView.model
-	property alias propertyTreeView: propertyTreeView
 
 	Rectangle {
 		anchors.fill: parent
@@ -63,11 +62,25 @@ FocusScope {
 				}
 			}
 
-			PropertyTreeView {
-				id: propertyTreeView
+			TabView {
 				Layout.preferredWidth: devToolsView.width * 0.3
 				Layout.fillHeight: true
-				target: elementsView.selectedObj
+				
+				Tab {
+					title: "Properties"
+
+					PropertyTreeView {
+						id: propertyTreeView
+						target: elementsView.selectedObj
+					}
+				}
+
+				Tab {
+					title: "Plasma"
+					Item {
+
+					}
+				}
 			}
 		}
 
