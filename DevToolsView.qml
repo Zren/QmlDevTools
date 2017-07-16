@@ -52,12 +52,6 @@ FocusScope {
 				elementsView: elementsView
 			}
 		}
-		
-
-		// RootTreeView {
-		// 	Layout.fillHeight: true
-		// 	target: targetRect
-		// }
 
 		PropertyTreeView {
 			id: propertyTreeView
