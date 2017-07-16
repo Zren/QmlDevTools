@@ -2,10 +2,18 @@ import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 
-Item {
+FocusScope {
 	id: devToolsView
 
 	clip: true
+	focus: true
+
+	Keys.onPressed: {
+		if (event.matches(StandardKey.Find)) {
+			event.accepted = true
+			findElementView.visible = true
+		}
+	}
 
 	property alias elementsView: elementsView
 	property alias elementsModel: elementsView.model

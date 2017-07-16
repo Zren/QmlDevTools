@@ -44,7 +44,6 @@ ListView {
 		} else {
 			elementsModel.expandIndex(currentIndex)
 		}
-		
 	}
 
 	delegate: MouseArea {
