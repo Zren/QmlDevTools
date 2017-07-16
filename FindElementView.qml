@@ -86,6 +86,10 @@ Rectangle {
 				selectMatch(1)
 			}
 
+			onAccepted: {
+				nextMatch()
+			}
+
 			Text {
 				anchors.verticalCenter: parent.verticalCenter
 				anchors.right: parent.right
