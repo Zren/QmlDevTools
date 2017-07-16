@@ -5,6 +5,8 @@ import QtQuick.Controls 1.4
 Item {
 	id: devToolsView
 
+	clip: true
+
 	property alias elementsView: elementsView
 	property alias elementsModel: elementsView.model
 	property alias propertyTreeView: propertyTreeView

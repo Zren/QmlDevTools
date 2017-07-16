@@ -4,10 +4,11 @@ import QtQuick.Controls 1.4
 
 import "util.js" as Util
 
-Column {
+Rectangle {
 	id: breadcrumbView
 
 	height: 19
+	color: "#fff"
 
 	property var elementsView: null
 	readonly property var hoveredObj: elementsView ? elementsView.hoveredObj : null
@@ -37,13 +38,17 @@ Column {
 	}
 
 	Rectangle {
-		width: parent.width
+		anchors.top: parent.top
+		anchors.left: parent.left
+		anchors.right: parent.right
 		height: 1
 		color: "#dfdfdf"
 	}
 
 	ListView {
-		width: parent.width
+		anchors.left: parent.left
+		anchors.right: parent.right
+		anchors.bottom: parent.bottom
 		height: 18
 		orientation: ListView.Horizontal
 
