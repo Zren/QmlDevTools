@@ -15,7 +15,7 @@ ListView {
 		if (str.trim().length == 0) {
 			return
 		}
-		input(str)
+		outputView.input(str)
 		var comp = 'import QtQuick 2.0; QtObject {\n'
 		comp += 'Component.onCompleted: {\n'
 		comp += 'try {\n'
