@@ -38,7 +38,7 @@ ListView {
 		try {
 			Qt.createQmlObject(comp, outputView)
 		} catch (e) {
-			outputView,error(e)
+			outputView.error(e)
 		}
 	}
 
