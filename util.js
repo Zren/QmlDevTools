@@ -34,3 +34,13 @@ function isChangedSignal(obj, key) {
 		&& endsWith(key, 'Changed')
 		&& obj.hasOwnProperty(key.substr(0, key.length - 'Changed'.length))
 }
+
+function getObjectKeys(obj) {
+	var tagName = getTagName(obj)
+	if (tagName == 'QMenuProxy') {
+		// Crashes on Object.keys()
+		return []
+	} else {
+		return Object.keys(obj)
+	}
+}

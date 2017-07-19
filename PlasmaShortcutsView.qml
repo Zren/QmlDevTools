@@ -34,6 +34,9 @@ ScrollView {
 	}
 
 	function checkChildren(obj) {
+		if (typeof obj.children === "undefined") {
+			return;
+		}
 		for (var i = 0; i < obj.children.length; i++) {
 			var child = obj.children[i]
 			checkObj(child)

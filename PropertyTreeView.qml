@@ -75,7 +75,7 @@ TreeView {
 			if (Util.isNull(target)) {
 				return
 			}
-			var keys = Object.keys(target)
+			var keys = Util.getObjectKeys(target)
 			for (var i in keys) {
 				var key = keys[i]
 				updateProperty(key)
@@ -90,7 +90,11 @@ TreeView {
 				console.log('isDescendant of devToolsView, skipping bindings')
 				return
 			}
-			var keys = Object.keys(target)
+			if (devToolsView.isDescendant(target)) {
+				console.log('isDescendant of devToolsView, skipping bindings')
+				return
+			}
+			var keys = Util.getObjectKeys(target)
 			for (var i in keys) {
 				var key = keys[i]
 				if (Util.isChangedSignal(target, key)) {
@@ -116,7 +120,7 @@ TreeView {
 			if (Util.isNull(lastTarget)) {
 				return
 			}
-			var keys = Object.keys(lastTarget)
+			var keys = Util.getObjectKeys(lastTarget)
 			for (var i in keys) {
 				var key = keys[i]
 				if (Util.isChangedSignal(lastTarget, key)) {
@@ -150,7 +154,7 @@ TreeView {
 				console.log('targetIsNull', target)
 				return
 			}
-			var keys = Object.keys(target)
+			var keys = Util.getObjectKeys(target)
 			keys.sort()
 			for (var i in keys) {
 				var key = keys[i]

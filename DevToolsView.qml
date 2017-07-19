@@ -96,6 +96,9 @@ FocusScope {
 	}
 
 	function isDescendantOf(obj, parentObj) {
+		if (typeof obj.parent === "undefined") {
+			return false // We don't know.
+		}
 		var curItem = obj
 		// while (curItem.parent) {
 		for (var i = 0; i < 1000; i++) { // Hard limit

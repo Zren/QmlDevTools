@@ -51,7 +51,7 @@ ListModel {
 		if (Util.isNull(target)) {
 			return
 		}
-		var keys = Object.keys(target)
+		var keys = Util.getObjectKeys(target)
 		for (var i in keys) {
 			var key = keys[i]
 			updateProperty(key)
@@ -119,7 +119,6 @@ ListModel {
 	}
 
 	function parseObj(obj) {
-		// console.log('parseObj', obj, obj.children.length)
 		var el = {
 			tagId: Util.valueToString(obj),
 			tagName: Util.getTagName(obj),
@@ -129,7 +128,8 @@ ListModel {
 			attributeKeys: [],
 			obj: obj,
 		}
-		var keys = Object.keys(obj)
+
+		var keys = Util.getObjectKeys(obj)
 		for (var i in keys) {
 			var key = keys[i]
 			var value = obj[key]
@@ -146,6 +146,7 @@ ListModel {
 				})
 			}
 		}
+		
 		return el
 	}
 
@@ -157,10 +158,10 @@ ListModel {
 	}
 
 	function findObj(obj) {
-		console.log("findObj", count)
+		// console.log("findObj", count)
 		for (var i = 0; i < count; i++) {
 			var el = get(i)
-			console.log("el.obj", el.obj, obj, el.obj == obj)
+			// console.log("el.obj", el.obj, obj, el.obj == obj)
 			if (el.obj == obj) {
 				return i
 			}
@@ -179,16 +180,19 @@ ListModel {
 
 	function expandIndex(parentIndex) {
 		var parentEl = get(parentIndex)
-		if (parentEl.expanded)
+		if (parentEl.expanded) {
 			return 0
-		if (devToolsView.contains(parentEl.obj))
+		} else if (devToolsView.contains(parentEl.obj)) {
 			return 0
+		} else if (typeof parentEl.obj.data === "undefined") {
+			return 0
+		}
 
 		var childIndex = parentIndex
 		var inserted = 0
-		if (parentEl.obj.children.length > 0) {
-			for (var i = 0; i < parentEl.obj.children.length; i++) {
-				var obj = parentEl.obj.children[i]
+		if (parentEl.obj.data.length > 0) {
+			for (var i = 0; i < parentEl.obj.data.length; i++) {
+				var obj = parentEl.obj.data[i]
 				var el = parseObj(obj)
 				el.depth = parentEl.depth + 1
 				insert(++childIndex, el)
@@ -207,11 +211,13 @@ ListModel {
 		var parentEl = get(parentIndex)
 		if (!parentEl.expanded) {
 			return 0
+		} else if (typeof parentEl.obj.data === "undefined") {
+			return 0
 		}
 
 		var removed = 0
-		for (var i = 0; i < parentEl.obj.children.length; i++) {
-			var obj = parentEl.obj.children[i]
+		for (var i = 0; i < parentEl.obj.data.length; i++) {
+			var obj = parentEl.obj.data[i]
 			var childIndex = findObj(obj)
 			if (childIndex >= 0) {
 				removed += collapseIndex(childIndex)
