@@ -3,6 +3,8 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.1
 
+import "util.js" as Util
+
 FocusScope {
 	id: devToolsView
 
@@ -95,24 +97,8 @@ FocusScope {
 		}
 	}
 
-	function isDescendantOf(obj, parentObj) {
-		if (typeof obj.parent === "undefined") {
-			return false // We don't know.
-		}
-		var curItem = obj
-		// while (curItem.parent) {
-		for (var i = 0; i < 1000; i++) { // Hard limit
-			if (!curItem.parent) {
-				return false
-			} else if (curItem.parent == parentObj) {
-				return true
-			}
-		}
-		return false // Reached hard limit
-	}
-
 	function isDescendant(obj) {
-		return isDescendantOf(obj, devToolsView)
+		return Util.isDescendantOf(obj, devToolsView)
 	}
 
 	function contains(obj) {

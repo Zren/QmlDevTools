@@ -16,15 +16,21 @@ Rectangle {
 	property var deepestChild: null
 
 	onSelectedObjChanged: {
-		deepestChild = selectedObj
+		if (Util.isNull(selectedObj)
+			|| !Util.isItem(deepestChild)
+			|| !Util.isDescendantOf(deepestChild, selectedObj)
+		) {
+			deepestChild = selectedObj
+		}
+	}
+
+	onDeepestChildChanged: {
 		breadcrumbModel.clear()
-		
-		if (Util.isNull(deepestChild))
+
+		if (!Util.isItem(deepestChild)) {
 			return
-		
-		if (typeof deepestChild.parent === "undefined")
-			return
-		
+		}
+
 		var curItem = deepestChild
 		for (var i = 0; i < 1000; i++) { // Hard limit
 			breadcrumbModel.insert(0, {

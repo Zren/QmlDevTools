@@ -44,3 +44,24 @@ function getObjectKeys(obj) {
 		return Object.keys(obj)
 	}
 }
+
+function isItem(obj) {
+	return !isNull(obj) && typeof obj.parent !== "undefined"
+}
+
+function isDescendantOf(obj, parentObj) {
+	if (!isItem(obj)) {
+		return false // We don't know.
+	}
+	var curItem = obj
+	// while (curItem.parent) {
+	for (var i = 0; i < 1000; i++) { // Hard limit
+		if (!curItem.parent) {
+			return false
+		} else if (curItem.parent == parentObj) {
+			return true
+		}
+		curItem = curItem.parent
+	}
+	return false // Reached hard limit
+}
