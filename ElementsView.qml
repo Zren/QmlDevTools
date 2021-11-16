@@ -139,18 +139,15 @@ ScrollingListView {
 			anchors.left: expandButton.right
 			anchors.leftMargin: 2
 			anchors.right: parent.right
-			
-
-			
-
-			Text {
-				id: openTag
-				text: '<font color="' + otherColor + '">&lt;</font>'
-			}
 
 			Text {
 				id: tagName
 				text: '<font color="' + tagColor + '">' + el.tagName + '</font>'
+			}
+
+			Text {
+				id: openTag
+				text: '<font color="' + otherColor + '">&nbsp;{</font>'
 			}
 
 			Repeater {
@@ -259,7 +256,7 @@ ScrollingListView {
 
 			Text {
 				id: endTag
-				text: '<font color="' + otherColor + '">&gt;</font>'
+				text: '<font color="' + otherColor + '">&nbsp;}</font>'
 			}
 		}
 	}
