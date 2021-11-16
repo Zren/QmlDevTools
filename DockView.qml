@@ -90,8 +90,8 @@ FocusScope {
 					spacing: 0
 
 					Item {
-						anchors.top: parent.top
-						anchors.topMargin: 3
+						Layout.alignment: Qt.AlignTop
+						Layout.topMargin: 3
 						Layout.preferredWidth: 20
 						height: 12
 
