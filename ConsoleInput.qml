@@ -19,6 +19,8 @@ TextArea {
 		history[historyIndex] = text
 	}
 
+	placeholderText: '$0 = ' + Util.getTagName(elementsView.selectedObj)
+
 	Keys.onPressed: {
 		if (event.key == Qt.Key_Return) {
 			if (event.modifiers == Qt.NoModifier) {
