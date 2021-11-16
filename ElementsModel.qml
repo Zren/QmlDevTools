@@ -59,8 +59,7 @@ ListModel {
 	}
 
 	property var ignoredTags: [
-		'QWindow',
-		'ContextMenu',
+		'ContextMenu', // ContextMenu QWindow::transientParent can cause SegFault
 	]
 
 	property var ignoredProperties: [
@@ -76,7 +75,18 @@ ListModel {
 		'transformOriginPoint',
 		'layer',
 
-		'transientParent', // QWindow::transientParent
+		'childrenRect',
+		'x',
+		'y',
+		'width',
+		'height',
+		'implicitWidth',
+		'implicitHeight',
+
+		'visualParent',
+
+
+		// 'ignoreUnknownSignals', // Connections Non-NOTIFYable
 
 		//--- anchors group
 		// http://doc.qt.io/qt-5/qml-qtquick-item.html#anchors-prop
@@ -99,6 +109,8 @@ ListModel {
 		// 'verticalCenterOffset',
 		'baselineOffset',
 		// 'alignWhenCentered',
+		'margins',
+		'inset',
 	]
 
 	property var ignoredDefaults: {
@@ -124,6 +136,9 @@ ListModel {
 		"state": "",
 		"childrenRect": Qt.rect(0,0,0,0),
 		"antialiasing": false,
+		"layoutDirection": 0,
+		"spacing": 5,
+		"ignoreUnknownSignals": false,
 	}
 
 	function parseObj(obj) {
@@ -150,6 +165,9 @@ ListModel {
 				} else if (typeof ignoredDefaults[key] !== 'undefined' && ignoredDefaults[key] == value) {
 					continue
 				} else {
+					// if (el.attributes.length >= 5) {
+					// 	continue
+					// }
 					el.attributes.push({
 						key: key,
 						value: Util.valueToString(value),
