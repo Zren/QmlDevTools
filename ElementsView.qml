@@ -137,7 +137,7 @@ ScrollingListView {
 		Flow {
 			id: flow
 			anchors.left: expandButton.right
-			anchors.leftMargin: 2
+			anchors.leftMargin: 4
 			anchors.right: parent.right
 
 			Text {
