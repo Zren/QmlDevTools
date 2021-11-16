@@ -1,8 +1,6 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.1
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick.Controls 2.3
 
 TextArea {
 	id: textArea
@@ -11,6 +9,8 @@ TextArea {
 	// Layout.preferredHeight: Math.max(4 + 5 + font.pixelSize + 5 + 4, 1 + contentHeight + 1)
 	Layout.preferredHeight: contentHeight
 	// font.pixelSize: 12
+	palette.base: window.palette.base
+	color: window.palette.text
 
 	property var history: ['']
 	property var historyIndex: 0
@@ -57,11 +57,5 @@ TextArea {
 		}
 	}
 
-	frameVisible: false
-
-	style: TextAreaStyle {
-		id: style
-
-		textMargin: 0
-	}
+	padding: 0
 }
