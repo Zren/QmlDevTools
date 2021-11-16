@@ -44,6 +44,7 @@ Rectangle {
 			}
 			curItem = curItem.parent
 		}
+		breadcrumbListView.positionViewAtEnd()
 	}
 
 	Rectangle {
@@ -55,11 +56,13 @@ Rectangle {
 	}
 
 	ListView {
+		id: breadcrumbListView
 		anchors.left: parent.left
 		anchors.right: parent.right
 		anchors.bottom: parent.bottom
 		height: 18
 		orientation: ListView.Horizontal
+		clip: true
 
 		model: ListModel {
 			id: breadcrumbModel
