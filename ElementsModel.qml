@@ -58,6 +58,11 @@ ListModel {
 		}
 	}
 
+	property var ignoredTags: [
+		'QWindow',
+		'ContextMenu',
+	]
+
 	property var ignoredProperties: [
 		'parent',
 		'data',
@@ -70,6 +75,8 @@ ListModel {
 		'transform',
 		'transformOriginPoint',
 		'layer',
+
+		'transientParent', // QWindow::transientParent
 
 		//--- anchors group
 		// http://doc.qt.io/qt-5/qml-qtquick-item.html#anchors-prop
@@ -129,22 +136,25 @@ ListModel {
 			attributeKeys: [],
 			obj: obj,
 		}
+		console.log('parseObj', el.tagName)
 
-		var keys = Util.getObjectKeys(obj)
-		for (var i in keys) {
-			var key = keys[i]
-			var value = obj[key]
-			if (Util.isChangedSignal(obj, key)) {
-			} else if (typeof(value) === "function") {
-			} else if (ignoredProperties.indexOf(key) >= 0) {
-				continue
-			} else if (typeof ignoredDefaults[key] !== 'undefined' && ignoredDefaults[key] == value) {
-				continue
-			} else {
-				el.attributes.push({
-					key: key,
-					value: Util.valueToString(value),
-				})
+		if (!ignoredTags.includes(el.tagName)) {
+			var keys = Util.getObjectKeys(obj)
+			for (var i in keys) {
+				var key = keys[i]
+				var value = obj[key]
+				if (Util.isChangedSignal(obj, key)) {
+				} else if (typeof(value) === "function") {
+				} else if (ignoredProperties.includes(key)) {
+					continue
+				} else if (typeof ignoredDefaults[key] !== 'undefined' && ignoredDefaults[key] == value) {
+					continue
+				} else {
+					el.attributes.push({
+						key: key,
+						value: Util.valueToString(value),
+					})
+				}
 			}
 		}
 		
@@ -295,6 +305,15 @@ ListModel {
 	// }
 
 	function setTarget(target) {
+		if (Util.isNull(target)) {
+			console.log('target.isNull', target)
+			return
+		}
+		rootObj = target
+	}
+
+
+	function setRootTarget(target) {
 		if (Util.isNull(target)) {
 			console.log('target.isNull', target)
 			return
