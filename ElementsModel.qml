@@ -66,6 +66,7 @@ ListModel {
 		'visibleChildren',
 		'states',
 		'transitions',
+		'containmentMask',
 		'transform',
 		'transformOriginPoint',
 		'layer',
