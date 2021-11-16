@@ -22,6 +22,7 @@ ApplicationWindow {
 	palette.mid: "#c0c0c0" // SplitView pressed
 	palette.midlight: "#e0e0e0"// SplitView hovered
 	palette.button: "#f0f0f0" // SplitView normal
+	title: "QML Inspector" + (devToolsView.elementsModel.rootObj ? ' - ' + devToolsView.elementsModel.rootObj : '')
 
 	property alias devToolsView: devToolsView
 	DevToolsView {
