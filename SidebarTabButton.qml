@@ -24,8 +24,6 @@ TabButton {
 		Rectangle {
 			id: highlightLine
 			anchors.top: parent.top
-			// anchors.left: parent.left
-			// anchors.right: parent.right
 			height: 3 * Screen.devicePixelRatio
 			color: {
 				if (control.checked) {
@@ -43,21 +41,6 @@ TabButton {
 					duration: 100
 				}
 			}
-			// readonly property int hoverMargins: parent.width * 0.25
-			// PropertyAnimation {
-			// 	id: hoverAnimation
-			// 	target: highlightLine
-			// 	property: "anchors.leftMargin"
-			// 	// properties: "anchors.leftMargin,anchors.rightMargin"
-			// 	// from: highlightLine.hoverMargins
-			// 	from: 40
-			// 	to: 0
-			// 	duration: 500
-			// }
-			// Connections {
-			// 	target: control
-			// 	onHovered: hoverAnimation.start()
-			// }
 		}
 	}
 }
