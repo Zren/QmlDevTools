@@ -1,29 +1,42 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.9
 
 import "util.js" as Util
 
-TreeView {
-	id: propertyTreeView
-
+ScrollView {
 	property alias target: targetModel.target
+	ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
-	TableViewColumn {
-		title: "Name"
-		role: "name"
-		width: 180
-	}
+ListView {
+	id: propertyTreeView
+	delegate: Flow {
+		width: ListView.view.width
+		property string expandoColor: "#6e6e6e"
+		property string tagColor: "#a0439a"
+		property string keyColor: "#9a6127"
+		property string valueColor: "#3879d9"
+		property string otherColor: "#a1b3cf"
+		property string funcColor: otherColor
 
-	// TableViewColumn {
-	// 	title: "Type"
-	// 	role: "type"
-	// 	width: 100
-	// }
-	TableViewColumn {
-		title: "Value"
-		role: "val"
-		width: 180
+		readonly property bool isFunction: model.type === 'function'
+
+		Text {
+			text: '&nbsp;'
+				+ '<font color="' + (isFunction ? funcColor : keyColor) + '">' + model.name + '</font>'
+				+ (isFunction
+					? '<font color="' + funcColor + '">()</font>'
+					: '<font color="' + otherColor + '">:&nbsp;</font>'
+				)
+			wrapMode: Text.Wrap
+		}
+		Text {
+			id: valueText
+			visible: !isFunction
+			text: '' + model.val
+			color: valueColor
+			wrapMode: Text.Wrap
+		}
 	}
 
 	model: ListModel {
@@ -167,4 +180,5 @@ TreeView {
 		}
 	} // ListModel
 
+	} // ListView
 }
