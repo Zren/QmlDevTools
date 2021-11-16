@@ -2,6 +2,8 @@ import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
 
+import "util.js" as Util
+
 TextArea {
 	id: textArea
 	Layout.fillWidth: true
