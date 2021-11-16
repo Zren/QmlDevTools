@@ -115,7 +115,7 @@ ScrollingListView {
 			anchors.left: parent.left
 			anchors.leftMargin: el.depth * indentWidth
 
-			enabled: typeof el.obj.children !== "undefined" ? el.obj.children.length > 0 : false
+			enabled: typeof el.obj.data !== "undefined" ? el.obj.data.length > 0 : false
 
 			width: expandText.width
 			height: expandText.height
