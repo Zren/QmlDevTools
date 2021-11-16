@@ -72,6 +72,10 @@ ScrollingListView {
 		property bool selected: index == listView.currentIndex
 		property bool hovered: el.obj == hoveredObj
 
+		// Note: el.obj.resources and el.obj.data is non-NOTIFYable.
+		readonly property int numDescendents: typeof el.obj.data !== "undefined" ? el.obj.data.length : 0
+		readonly property bool hasDescendents: numDescendents > 0
+
 		property string expandoColor: selected ? "#fff" : "#6e6e6e"
 		property string tagColor: selected ? "#fff" : "#a0439a"
 		property string keyColor: selected ? "#a1b3cf" : "#9a6127"
@@ -115,7 +119,7 @@ ScrollingListView {
 			anchors.left: parent.left
 			anchors.leftMargin: el.depth * indentWidth
 
-			enabled: typeof el.obj.data !== "undefined" ? el.obj.data.length > 0 : false
+			enabled: mouseArea.hasDescendents
 
 			width: expandText.width
 			height: expandText.height
