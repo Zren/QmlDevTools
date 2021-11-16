@@ -9,6 +9,7 @@ ScrollingListView {
 	property var hoveredObj: null
 
 	property var indentWidth: 12
+	readonly property int maxVisibleAttributes: 8
 
 	function setSelectedObj(nextObj) {
 		for (var i = 0; i < listView.count; i++) {
@@ -73,9 +74,15 @@ ScrollingListView {
 		property bool hovered: el.obj == hoveredObj
 
 		// Note: el.obj.resources and el.obj.data is non-NOTIFYable.
-		readonly property int numDescendents: typeof el.obj.data !== "undefined" ? el.obj.data.length : 0
+		property int numDescendents: typeof el.obj.children !== "undefined" ? el.obj.children.length : 0
 		readonly property bool hasDescendents: numDescendents > 0
-
+		Connections {
+			target: el.obj
+			function childrenChanged() {
+				mouseArea.numDescendents = typeof el.obj.data !== "undefined" ? el.obj.data.length : 0
+			}
+		}
+		
 		property string expandoColor: selected ? "#fff" : "#6e6e6e"
 		property string tagColor: selected ? "#fff" : "#a0439a"
 		property string keyColor: selected ? "#a1b3cf" : "#9a6127"
@@ -89,6 +96,12 @@ ScrollingListView {
 				elementsView.hoveredObj = el.obj
 			} else if (hoveredObj == el.obj) {
 				elementsView.hoveredObj = null
+			}
+		}
+
+		onSelectedChanged: {
+			if (selected) {
+				attrRepeater.allAttrVisible = true
 			}
 		}
 
@@ -155,8 +168,9 @@ ScrollingListView {
 			}
 
 			Repeater {
-				id: repeater
+				id: attrRepeater
 				model: el.attributes
+				property bool allAttrVisible: count <= elementsView.maxVisibleAttributes
 
 				// Text {
 				// 	property var key: el.attributes.get(index).key
@@ -178,6 +192,7 @@ ScrollingListView {
 				Row {
 					width: childrenRect.width
 					height: childrenRect.height
+					visible: attrRepeater.allAttrVisible || index < elementsView.maxVisibleAttributes
 
 					property var key: el.attributes.get(index).key
 					property var value: el.attributes.get(index).value
@@ -256,6 +271,12 @@ ScrollingListView {
 						text: '<font color="' + otherColor + '">"</font>'
 					}
 				}
+			}
+
+			Text {
+				id: truncatedIndicator
+				visible: !attrRepeater.allAttrVisible
+				text: '<font color="' + otherColor + '">&nbsp;...&nbsp;</font>'
 			}
 
 			Text {
