@@ -5,12 +5,14 @@ import QtQuick.Controls 2.9
 import "util.js" as Util
 
 ScrollView {
+	id: propertyScrollView
 	property alias target: targetModel.target
 	ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
 	ListView {
 		id: propertyTreeView
 		delegate: Flow {
+			id: propertyDelegate
 			width: ListView.view.width
 			property string expandoColor: "#6e6e6e"
 			property string tagColor: "#a0439a"
@@ -19,6 +21,7 @@ ScrollView {
 			property string otherColor: "#a1b3cf"
 			property string funcColor: otherColor
 
+			readonly property bool canModify: model.type === 'boolean' || model.type === 'number' || model.type === 'string'
 			readonly property bool isFunction: model.type === 'function'
 
 			Text {
@@ -32,10 +35,74 @@ ScrollView {
 			}
 			Text {
 				id: valueText
-				visible: !isFunction
+				visible: !isFunction && !propertyEditorLoader.active
 				text: '' + model.val
 				color: valueColor
 				wrapMode: Text.Wrap
+				font.underline: hoverArea.containsMouse
+
+				MouseArea {
+					id: hoverArea
+					enabled: propertyDelegate.canModify
+					visible: enabled
+					anchors.fill: parent
+					hoverEnabled: true
+					cursorShape: Qt.IBeamCursor
+					onClicked: propertyEditorLoader.active = true
+				}
+			}
+
+			Loader {
+				id: propertyEditorLoader
+				active: false
+				visible: active
+				Layout.preferredWidth: valueText.implicitWidth
+				Layout.preferredHeight: valueText.implicitHeight
+				Layout.fillWidth: true
+				sourceComponent: Component {
+					id: propertyEditor
+					TextField {
+						text: '' + model.val
+						palette.base: window.palette.base
+						color: window.palette.text
+						padding: 0
+						background: Item {}
+						onEditingFinished: {
+							// console.log('onEditingFinished', text)
+							Qt.callLater(function(){
+								// Call after onAccepted
+								propertyEditorLoader.active = false
+							})
+						}
+						onAccepted: {
+							// console.log('onAccepted', text)
+							// console.log('target', target)
+							// console.log('model.name', model.name)
+							// console.log('model.type', model.type)
+							if (model.type == 'boolean') {
+								if (text === 'true') {
+									target[model.name] = true
+								} else if (text === 'false') {
+									target[model.name] = false
+								}
+							} else if (model.type == 'number') {
+								var newValue = parseFloat(text)
+								if (text === 'NaN' || newValue !== NaN) {
+									target[model.name] = newValue
+								}
+							} else if (model.type == 'string') {
+								target[model.name] = text
+							}
+						}
+
+						Component.onCompleted: {
+							forceActiveFocus()
+							selectAll()
+						}
+					}
+				}
+				// property var target: propertyScrollView.target
+				// property var model: propertyDelegate.model
 			}
 		}
 
