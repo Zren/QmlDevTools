@@ -1,6 +1,6 @@
 import QtQuick 2.6
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.9
 
 ScrollView {
 	id: elementsView
@@ -11,6 +11,7 @@ ScrollView {
 	property alias currentIndex: listView.currentIndex
 	property alias boundsBehavior: listView.boundsBehavior
 	property alias highlightMoveDuration: listView.highlightMoveDuration
+	ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
 	clip: true
 	// focus: true
