@@ -1,19 +1,27 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.1
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.0
-import QtMultimedia 5.6
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.extras 2.0 as PlasmaExtras
+import QtQuick.Controls 2.12
 
-Window {
+ApplicationWindow {
 	id: window
 	x: 0
 	y: 0
 	width: 1240
 	height: 720
+	palette.alternateBase: "#ffffff"
+	palette.base: "#ffffff"
+	palette.window: "#ffffff"
+	palette.text: "#000000"
+	palette.buttonText: "#000000"
+
+	palette.highlight: "#d0d0d0"
+	palette.highlightedText: "#3879d9"
+
+	// qqc2-breeze-style variables
+	palette.mid: "#c0c0c0" // SplitView pressed
+	palette.midlight: "#e0e0e0"// SplitView hovered
+	palette.button: "#f0f0f0" // SplitView normal
 
 	// MouseArea {
 	// 	anchors.fill: parent

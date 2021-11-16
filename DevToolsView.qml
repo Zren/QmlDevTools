@@ -1,7 +1,7 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 1.0 as QQC1
+import QtQuick.Controls 2.13 // SplitView requires Qt 5.13
 
 import "util.js" as Util
 
@@ -33,16 +33,17 @@ FocusScope {
 		color: "#fff"
 	}
 
-	ColumnLayout {
+	SplitView {
 		anchors.fill: parent
-		spacing: 0
+		orientation: Qt.Vertical
 
-		RowLayout {
-			spacing: 0
+		SplitView {
+			SplitView.fillWidth: true
+			SplitView.fillHeight: true
 
 			ColumnLayout {
-				Layout.fillWidth: true
-				Layout.fillHeight: true
+				SplitView.fillWidth: true
+				SplitView.fillHeight: true
 				spacing: 0
 
 				ElementsView {
@@ -65,35 +66,49 @@ FocusScope {
 				}
 			}
 
-			TabView {
-				Layout.preferredWidth: devToolsView.width * 0.3
-				Layout.fillHeight: true
+			ColumnLayout {
+				SplitView.preferredWidth: devToolsView.width * 0.3
+				SplitView.fillHeight: true
+				spacing: 0
 
-				Tab {
-					title: "Plasma"
-					PlasmaShortcutsView {
-						id: plasmaShortcutsView
-						elementsView: devToolsView.elementsView
+				TabBar {
+					id: sidebarTabBar
+					Layout.fillWidth: true
+					background: Rectangle {
+						color: palette.button
+					}
+
+					SidebarTabButton {
+						text: "Properties"
+						// palette: window.palette
+					}
+					SidebarTabButton {
+						text: "Plasma"
+						// palette: window.palette
 					}
 				}
-				
-				Tab {
-					title: "Properties"
+
+				StackLayout {
+					Layout.fillWidth: true
+					currentIndex: sidebarTabBar.currentIndex
 
 					PropertyTreeView {
 						id: propertyTreeView
 						target: elementsView.selectedObj
 					}
-				}
 
-				style: TabViewStyle {}
+					PlasmaShortcutsView {
+						id: plasmaShortcutsView
+						elementsView: devToolsView.elementsView
+					}
+				}
 			}
 		}
 
 		DockView {
 			id: dockView
-			Layout.fillWidth: true
-			Layout.preferredHeight: devToolsView.height * 0.3
+			SplitView.fillWidth: true
+			SplitView.preferredHeight: devToolsView.height * 0.3
 		}
 	}
 
