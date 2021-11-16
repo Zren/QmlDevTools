@@ -54,8 +54,8 @@ ScrollView {
 	ColumnLayout {
 		Connections {
 			target: elementsModel
-			onElementAdded: console.log('shortcuts.added', element.tagId)
-			onUpdated: console.log('shortcuts.updated')
+			// onElementAdded: console.log('shortcuts.added', element.tagId)
+			// onUpdated: console.log('shortcuts.updated')
 		}
 
 		Text {

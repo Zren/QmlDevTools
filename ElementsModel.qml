@@ -136,7 +136,7 @@ ListModel {
 			attributeKeys: [],
 			obj: obj,
 		}
-		console.log('parseObj', el.tagName)
+		// console.log('parseObj', el.tagName)
 
 		if (!ignoredTags.includes(el.tagName)) {
 			var keys = Util.getObjectKeys(obj)

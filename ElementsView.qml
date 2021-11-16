@@ -212,7 +212,7 @@ ScrollingListView {
 						connectAnimations()
 					}
 					Component.onDestruction: {
-						console.log('element onDestruction', index)
+						// console.log('element onDestruction', index)
 						disconnectAnimations()
 					}
 
