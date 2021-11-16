@@ -2,6 +2,7 @@ import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.0 as QQC1
 import QtQuick.Controls 2.13 // SplitView requires Qt 5.13
+import QtQuick.Window 2.0
 
 import "util.js" as Util
 
@@ -108,7 +109,7 @@ FocusScope {
 		DockView {
 			id: dockView
 			SplitView.fillWidth: true
-			SplitView.preferredHeight: devToolsView.height * 0.3
+			SplitView.preferredHeight: 200 * Screen.devicePixelRatio
 		}
 	}
 
