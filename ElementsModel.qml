@@ -84,7 +84,11 @@ ListModel {
 		'implicitHeight',
 
 		'visualParent',
-
+		'contentData', // Control
+		'flickableData',
+		'flickableChildren',
+		'gradient', // Rectangle
+		'_icon', // QQuickAction1
 
 		// 'ignoreUnknownSignals', // Connections Non-NOTIFYable
 
@@ -139,6 +143,8 @@ ListModel {
 		"layoutDirection": 0,
 		"spacing": 5,
 		"ignoreUnknownSignals": false,
+		"usingRenderingCache": true,
+		"multipleImages": false,
 	}
 
 	function parseObj(obj) {

@@ -211,7 +211,9 @@ ScrollingListView {
 					function disconnectAnimations() {
 						if (animationsConnected) {
 							valueChanged.disconnect(valueChangedAnimation.start)
-							value = Qt.binding(function() { return el.attributes.get(index).value })
+							if (el && el.attributes) { // Destroyed
+								value = Qt.binding(function() { return el.attributes.get(index).value })
+							}
 							animationsConnected = false
 						}
 					}
