@@ -11,6 +11,10 @@ ScrollingListView {
 	property var indentWidth: 12
 	readonly property int maxVisibleAttributes: 8
 
+	ElementSelector {
+		id: elementSelector
+	}
+
 	function setSelectedObj(nextObj) {
 		for (var i = 0; i < listView.count; i++) {
 			var el = model.get(i)
@@ -104,6 +108,7 @@ ScrollingListView {
 		function select() {
 			listView.currentIndex = index
 			elementsView.focus = true
+			elementSelector.itemSelected(el.obj)
 		}
 
 		Rectangle {

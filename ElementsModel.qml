@@ -336,13 +336,7 @@ ListModel {
 		rootObj = target
 	}
 
-
-	function setRootTarget(target) {
-		if (Util.isNull(target)) {
-			console.log('target.isNull', target)
-			return
-		}
-
+	function getRootOf(target) {
 		var curItem = target
 		for (var i = 0; i < 1000; i++) { // Hard limit
 			if (!curItem.parent) {
@@ -350,6 +344,14 @@ ListModel {
 			}
 			curItem = curItem.parent
 		}
-		rootObj = curItem
+		return curItem
+	}
+
+	function setRootTarget(target) {
+		if (Util.isNull(target)) {
+			console.log('target.isNull', target)
+			return
+		}
+		rootObj = getRootOf(target)
 	}
 }
