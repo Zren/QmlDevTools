@@ -99,12 +99,6 @@ ScrollingListView {
 			}
 		}
 
-		onSelectedChanged: {
-			if (selected) {
-				attrRepeater.allAttrVisible = true
-			}
-		}
-
 		onClicked: select()
 
 		function select() {
@@ -170,7 +164,7 @@ ScrollingListView {
 			Repeater {
 				id: attrRepeater
 				model: el.attributes
-				property bool allAttrVisible: count <= elementsView.maxVisibleAttributes
+				property bool allAttrVisible: count <= elementsView.maxVisibleAttributes // || el.expanded
 
 				// Text {
 				// 	property var key: el.attributes.get(index).key
