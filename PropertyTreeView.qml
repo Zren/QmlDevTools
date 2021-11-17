@@ -36,7 +36,12 @@ ScrollView {
 			Text {
 				id: valueText
 				visible: !isFunction && !propertyEditorLoader.active
-				text: '' + model.val
+				text: ''
+					+ (model.type === 'object' && model.val.indexOf('#') == 0 // is color
+						? '<font color="' + model.val + '">■</font> '
+						: ''
+					)
+					+ model.val
 				color: valueColor
 				wrapMode: Text.Wrap
 				font.underline: hoverArea.containsMouse
